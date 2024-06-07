@@ -7,7 +7,7 @@ import org.litepal.crud.LitePalSupport
 /**
  * 关卡
  */
-class Level() : LitePalSupport(), Parcelable {
+class Level : LitePalSupport(), Parcelable {
     //id
     private var id = 0
 
@@ -63,9 +63,6 @@ class Level() : LitePalSupport(), Parcelable {
     fun setLevelState(levelState: Char) {
         this.levelState = levelState
     }
-
-
-    constructor(parcel: Parcel) : this() {}
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)

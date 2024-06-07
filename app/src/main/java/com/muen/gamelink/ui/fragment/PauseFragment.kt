@@ -41,7 +41,7 @@ class PauseFragment : BaseFragment<FragmentPauseBinding>() {
             SoundPlayManager.getInstance(requireContext()).play(3)
             //查询对应模式的数据
             val levels: List<Level> =
-                LitePal.where("l_mode == ?", String.valueOf(level.getLevelMode())).find(
+                LitePal.where("levelMode == ?", String.valueOf(level.getLevelMode())).find(
                     Level::class.java
                 )
             //依次查询每一个内容
