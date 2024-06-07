@@ -34,13 +34,7 @@ import java.util.TimerTask
  * 使用单例模式
  * 游戏管理者，管理关于游戏的一切
  */
-class LinkManager {
-    //单例模式
-    companion object {
-        val instance by lazy {
-            LinkManager()
-        }
-    }
+object LinkManager {
 
     //掌管AnimalView分布规则（布局）
     private var board: Array<IntArray> = arrayOf()
@@ -69,9 +63,6 @@ class LinkManager {
 
     //监听者
     private var listener: LinkGame? = null
-
-    //保存上下文
-    private var mContext: Context? = null
 
     @SuppressLint("HandlerLeak")
     private val handler: Handler = object : Handler() {
@@ -103,8 +94,6 @@ class LinkManager {
         levelId: Int,
         levelMode: Char
     ) {
-        mContext = context
-
         //清楚上一次游戏的痕迹
         clearLastGame()
 
@@ -289,7 +278,7 @@ class LinkManager {
         board[doubleRemove[1]!!.x][doubleRemove[1]!!.y] = 0
 
         //3.播放消除音效以及粉碎
-        SoundPlayManager.getInstance(mContext!!).play(4)
+        //SoundPlayManager.getInstance(mContext).play(4)
         //粉碎、
         val explosionField: ExplosionField = ExplosionField.attach2Window(link_activity)
 
@@ -333,7 +322,7 @@ class LinkManager {
         }
 
         //3.播放消除音效以及粉碎
-        SoundPlayManager.getInstance(mContext!!).play(4)
+        //SoundPlayManager.getInstance(mContext!!).play(4)
         //粉碎、
         val explosionField: ExplosionField = ExplosionField.attach2Window(link_activity)
 
@@ -373,7 +362,7 @@ class LinkManager {
         link_activity: Activity?
     ) {
         //0.播放消除音效以及粉碎
-        SoundPlayManager.getInstance(mContext!!).play(4)
+        //SoundPlayManager.getInstance(mContext!!).play(4)
         //粉碎、
         val explosionField: ExplosionField = ExplosionField.attach2Window(link_activity)
 
@@ -407,7 +396,7 @@ class LinkManager {
         if (!isPause) {
             stopTimer()
         } else {
-            startTimer(time.toFloat())
+            startTimer(time)
         }
 
         //切换状态
@@ -434,7 +423,7 @@ class LinkManager {
             //暂停背景音乐
             BgmManager.getInstance(context).pauseBackgroundMusic()
             //播放失败音效
-            SoundPlayManager.getInstance(mContext!!).play(2)
+            SoundPlayManager.getInstance(context).play(2)
 
             //继续播放
             Handler().postDelayed({
@@ -452,7 +441,7 @@ class LinkManager {
             //暂停背景音乐
             BgmManager.getInstance(context).pauseBackgroundMusic()
             //播放成功音效
-            SoundPlayManager.getInstance(mContext!!).play(1)
+            SoundPlayManager.getInstance(context).play(1)
             Handler().postDelayed({
                 BgmManager.getInstance(context).resumeBackgroundMusic()
             }, 5000)

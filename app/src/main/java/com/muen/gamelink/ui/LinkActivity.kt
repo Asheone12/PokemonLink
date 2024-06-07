@@ -127,7 +127,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         screenHeight = ScreenUtil.getScreenHeight(applicationContext)
 
         linkInfo = LinkInfo()
-        manager = LinkManager.instance
+        manager = LinkManager
         //创建分碎视图的类
         explosionField = ExplosionField.attach2Window(this)
 

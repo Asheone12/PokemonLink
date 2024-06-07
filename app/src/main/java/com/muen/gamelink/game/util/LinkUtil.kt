@@ -19,10 +19,10 @@ object LinkUtil {
      */
     fun setBoardsStatus(status: Boolean) {
         //获取所有宝可梦视图
-        val manager: LinkManager = LinkManager.instance
+        val manager = LinkManager
         val animals: List<AnimalView> = manager.getAnimals()
         for (i in animals.indices) {
-            animals[i].setEnabled(status)
+            animals[i].isEnabled = status
         }
     }
 
@@ -32,7 +32,7 @@ object LinkUtil {
      */
     fun getDoubleRemove(): Array<AnimalPoint?> {
         //获得模板
-        val board: Array<IntArray> = LinkManager.instance.getBoard()
+        val board: Array<IntArray> = LinkManager.getBoard()
 
         //存储两个相对坐标
         var point1: AnimalPoint? = null
@@ -84,7 +84,7 @@ object LinkUtil {
      */
     fun getExistAnimal(): Int {
         //获取布局
-        val board: Array<IntArray> = LinkManager.instance.getBoard()
+        val board: Array<IntArray> = LinkManager.getBoard()
 
         //产生随机数
         var random = 0
@@ -111,7 +111,7 @@ object LinkUtil {
      */
     fun getBoardState(): Boolean {
         //获取布局
-        val board: Array<IntArray> = LinkManager.instance.getBoard() ?: return false
+        val board: Array<IntArray> = LinkManager.getBoard() ?: return false
 
         //bug处理
 
@@ -155,7 +155,7 @@ object LinkUtil {
      */
     fun getSerialClick(): Int {
         //获取布局
-        val board: Array<IntArray> = LinkManager.instance.getBoard()
+        val board: Array<IntArray> = LinkManager.getBoard()
         return (board.size - 2) * (board[0].size - 2) / 2
     }
 
@@ -166,7 +166,7 @@ object LinkUtil {
      * @return
      */
     fun getRealAnimalPoint(point: AnimalPoint, context: Context): AnimalPoint {
-        val manager: LinkManager = LinkManager.instance
+        val manager = LinkManager
         return AnimalPoint(
             manager.getPaddingHor() + PxUtil.dpToPx(
                 manager.getAnimalSize(),

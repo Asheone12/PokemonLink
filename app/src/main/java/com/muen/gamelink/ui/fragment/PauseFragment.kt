@@ -64,7 +64,7 @@ class PauseFragment : BaseFragment<FragmentPauseBinding>() {
             //播放点击音效
             SoundPlayManager.getInstance(requireContext()).play(3)
             //回到游戏
-            LinkManager.instance.pauseGame()
+            LinkManager.pauseGame()
             //移除自己
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.remove(this@PauseFragment)
