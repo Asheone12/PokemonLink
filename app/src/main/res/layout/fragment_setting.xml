@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#BB000000">
+
+    <!--主题内容-->
+    <RelativeLayout
+        android:id="@+id/setting_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+
+        <!--背景颜色-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/view_setting_bg" />
+
+        <!--具体内容-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--背景音乐-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical">
+
+                <com.muen.gamelink.widget.MyTextView
+                    style="@style/SettingMusicText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/Music_Pic" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/view_setting_pic_bg"
+                        android:src="@drawable/view_setting_music_pic" />
+
+                    <SeekBar
+                        android:id="@+id/seek_bar_music"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="4"
+                        android:background="@null"
+                        android:max="100"
+                        android:progress="80"
+                        android:progressDrawable="@drawable/progressbar_bg"
+                        android:secondaryProgress="100"
+                        android:splitTrack="false"
+                        android:thumb="@drawable/seek_bar_point" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!--音效-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical">
+
+                <com.muen.gamelink.widget.MyTextView
+                    style="@style/SettingMusicText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/Sound_Pic" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/view_setting_pic_bg"
+                        android:src="@drawable/view_setting_sound_effect" />
+
+                    <SeekBar
+                        android:id="@+id/seek_bar_effect"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="4"
+                        android:background="@null"
+                        android:max="100"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/progressbar_bg"
+                        android:secondaryProgress="100"
+                        android:splitTrack="false"
+                        android:thumb="@drawable/seek_bar_point" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!--完成-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
+
+                <com.muen.gamelink.widget.MyTextView
+                    android:id="@+id/setting_finish"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/view_setting_finish"
+                    android:text="@string/FinishText"
+                    android:textColor="#ffffff"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!--标题部分-->
+    <RelativeLayout
+        android:layout_width="240dp"
+        android:layout_height="200dp"
+        android:layout_above="@+id/setting_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-50dp"
+        android:background="@drawable/view_setting_banner"
+        android:gravity="center_horizontal">
+
+        <com.muen.gamelink.widget.MyTextView
+            style="@style/SettingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/Setting" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

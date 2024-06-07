@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AA000000">
+
+    <!--商店具体内容-->
+    <RelativeLayout
+        android:id="@+id/view_store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/view_store_bg"
+        android:padding="15dp">
+
+        <!--持有的金币数量-->
+        <LinearLayout
+            android:id="@+id/money_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <com.muen.gamelink.widget.MyTextView
+                style="@style/ShowMoneyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ShowMoney" />
+
+            <!--显示持有的金币数目-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/view_store_show_money_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <!--图标-->
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/link_coin" />
+
+                <!--持有的数目-->
+                <com.muen.gamelink.widget.MyTextView
+                    android:id="@+id/store_user_money"
+                    style="@style/ShowMoneyNumText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1099" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--道具展示-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/money_show"
+            android:layout_centerInParent="true"
+            android:background="@drawable/view_store_show_prop_bg"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <!--拳头道具-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/view_store_show_simple_prop_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!--道具图标-->
+                <swu.xl.numberitem.NumberOfItem
+                    android:id="@+id/prop_fight"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:paddingBottom="2dp"
+                    app:imgResource="@drawable/store_prop_bg_shape"
+                    app:srcResource="@drawable/link_prop_fight" />
+
+                <!--道具文本说明-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <!--名称-->
+                    <com.muen.gamelink.widget.MyTextView
+                        style="@style/ShowSimplePropTitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/Prop_Fight_Text" />
+
+                    <!--描述-->
+                    <com.muen.gamelink.widget.MyTextView
+                        style="@style/ShowSimplePropDesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/Prop_Fight_Des" />
+
+
+                </LinearLayout>
+
+                <!--价格-->
+                <com.muen.gamelink.widget.MyLinearLayout
+                    android:id="@+id/store_fight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/view_store_show_simple_money_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <!--图标-->
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/link_coin" />
+
+                    <!--持有的数目-->
+                    <com.muen.gamelink.widget.MyTextView
+                        android:id="@+id/store_fight_money"
+                        style="@style/ShowSimpleMoneyNumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="10" />
+
+                </com.muen.gamelink.widget.MyLinearLayout>
+            </LinearLayout>
+
+            <!--炸弹道具-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/view_store_show_simple_prop_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!--道具图标-->
+                <swu.xl.numberitem.NumberOfItem
+                    android:id="@+id/prop_bomb"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:paddingBottom="2dp"
+                    app:imgResource="@drawable/store_prop_bg_shape"
+                    app:srcResource="@drawable/link_prop_bomb" />
+
+                <!--道具文本说明-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <!--名称-->
+                    <com.muen.gamelink.widget.MyTextView
+                        style="@style/ShowSimplePropTitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/Prop_Bomb_Text" />
+
+                    <!--描述-->
+                    <com.muen.gamelink.widget.MyTextView
+                        style="@style/ShowSimplePropDesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/Prop_Bomb_Des" />
+
+
+                </LinearLayout>
+
+                <!--价格-->
+                <com.muen.gamelink.widget.MyLinearLayout
+                    android:id="@+id/store_bomb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/view_store_show_simple_money_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <!--图标-->
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/link_coin" />
+
+                    <!--持有的数目-->
+                    <com.muen.gamelink.widget.MyTextView
+                        android:id="@+id/store_bomb_money"
+                        style="@style/ShowSimpleMoneyNumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="10" />
+
+                </com.muen.gamelink.widget.MyLinearLayout>
+            </LinearLayout>
+
+            <!--刷新道具-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/view_store_show_simple_prop_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!--道具图标-->
+                <swu.xl.numberitem.NumberOfItem
+                    android:id="@+id/prop_refresh"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:paddingBottom="2dp"
+                    app:imgResource="@drawable/store_prop_bg_shape"
+                    app:srcResource="@drawable/link_prop_resort" />
+
+                <!--道具文本说明-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <!--名称-->
+                    <com.muen.gamelink.widget.MyTextView
+                        style="@style/ShowSimplePropTitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/Prop_Refresh_Text" />
+
+                    <!--描述-->
+                    <com.muen.gamelink.widget.MyTextView
+                        style="@style/ShowSimplePropDesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/Prop_Refresh_Des" />
+
+
+                </LinearLayout>
+
+                <!--价格-->
+                <com.muen.gamelink.widget.MyLinearLayout
+                    android:id="@+id/store_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/view_store_show_simple_money_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <!--图标-->
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/link_coin" />
+
+                    <!--持有的数目-->
+                    <com.muen.gamelink.widget.MyTextView
+                        android:id="@+id/store_refresh_money"
+                        style="@style/ShowSimpleMoneyNumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="10" />
+
+                </com.muen.gamelink.widget.MyLinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!--商店牌子-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/view_store"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-60dp"
+        android:src="@drawable/view_store_banner" />
+
+    <!--关闭按钮-->
+    <ImageView
+        android:id="@+id/store_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@id/view_store"
+        android:layout_alignEnd="@id/view_store"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/view_store_delete" />
+
+</RelativeLayout>

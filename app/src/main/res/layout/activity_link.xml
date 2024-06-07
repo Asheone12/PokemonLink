@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_link"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_success_failure_link"
+
+    android:clipChildren="false"
+
+    tools:context=".ui.LinkActivity">
+
+    <!--关卡，道具，暂停信息-->
+    <RelativeLayout
+        android:id="@+id/message_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/link_message">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginBottom="5dp">
+
+            <!--关卡-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.muen.gamelink.widget.MyTextView
+                    style="@style/link_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="1dp"
+                    android:text="@string/Link" />
+
+                <com.muen.gamelink.widget.MyTextView
+                    android:id="@+id/link_level_text"
+                    style="@style/link_level_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="25dp"
+                    android:text="15" />
+
+            </LinearLayout>
+
+            <!--道具-->
+            <RelativeLayout
+                android:id="@+id/link_items"
+                style="@style/link_prop_relative">
+
+                <!--道具 拳击-->
+                <swu.xl.numberitem.NumberOfItem
+                    android:id="@+id/item_fight"
+                    style="@style/link_props"
+                    app:srcResource="@drawable/link_prop_fight" />
+
+                <!--道具 炸弹-->
+                <swu.xl.numberitem.NumberOfItem
+                    android:id="@+id/item_bomb"
+                    style="@style/link_props"
+                    app:srcResource="@drawable/link_prop_bomb" />
+
+                <!--道具 混乱-->
+                <swu.xl.numberitem.NumberOfItem
+                    android:id="@+id/item_refresh"
+                    style="@style/link_props"
+                    app:srcResource="@drawable/link_prop_resort" />
+
+                <!--暂停-->
+                <ImageView
+                    android:id="@+id/link_pause"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/link_stop" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <!--金币-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_show"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/link_message"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="0dp"
+        android:paddingBottom="2dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="80dp"
+            android:src="@drawable/link_coin" />
+
+        <com.muen.gamelink.widget.MyTextView
+            android:id="@+id/link_money_text"
+            style="@style/link_money_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1099"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <!--时间控制-->
+    <swu.xl.circleprogress.CircleProgress
+        android:id="@+id/time_show"
+        android:layout_width="122dp"
+        android:layout_height="120dp"
+        app:textLeftPadding="20"
+        app:textSize="17"
+        app:textTopPadding="3" />
+
+    <!--布局部分-->
+    <com.muen.gamelink.game.view.GameView
+        android:id="@+id/link_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/time_show" />
+
+
+</RelativeLayout>

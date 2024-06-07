@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_success_failure_link"
+    android:orientation="vertical"
+    tools:context=".ui.FailureActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!--哭泣的比卡丘-->
+        <ImageView
+            android:id="@+id/cry_pikaqiu"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:src="@drawable/failure_pikaqiu_cry" />
+
+        <!--失败了-->
+        <com.muen.gamelink.widget.MyTextView
+            style="@style/ShowFailureMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/cry_pikaqiu"
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginTop="180dp"
+            android:text="@string/Failure" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!--关卡菜单按钮-->
+        <ImageButton
+            android:id="@+id/btn_menu"
+            style="@style/operation_btn"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/btn_shape_menu"
+            android:src="@drawable/menu" />
+
+        <!--刷新按钮-->
+        <ImageButton
+            android:id="@+id/btn_refresh"
+            style="@style/operation_btn"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/btn_shape_refresh"
+            android:src="@drawable/refresh" />
+
+    </RelativeLayout>
+
+</LinearLayout>

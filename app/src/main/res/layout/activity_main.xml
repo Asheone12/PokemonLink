@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/main_bg"
+    tools:context=".ui.MainActivity">
+
+    <!--包裹布局-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--标题部分-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <!--标题-->
+            <com.muen.gamelink.widget.MyTextView
+                android:id="@+id/main_title"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_title_bg"
+                android:gravity="center"
+                android:paddingBottom="8dp"
+                android:text="@string/app_name"
+                android:textSize="28sp" />
+
+            <!--success_banner-->
+            <ImageView
+                android:id="@+id/main_banner"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/main_banner" />
+
+        </LinearLayout>
+
+        <!--模式部分-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!--简单-->
+            <com.muen.gamelink.widget.MyButton
+                android:id="@+id/main_mode_easy"
+                style="@style/mode_btn"
+                android:text="@string/mode_easy" />
+
+            <!--普通-->
+            <com.muen.gamelink.widget.MyButton
+                android:id="@+id/main_mode_normal"
+                style="@style/mode_btn"
+                android:text="@string/mode_normal" />
+
+            <!--困难-->
+            <com.muen.gamelink.widget.MyButton
+                android:id="@+id/main_mode_hard"
+                style="@style/mode_btn"
+                android:text="@string/mode_hard" />
+
+        </LinearLayout>
+
+        <!--相关设置-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <!--设置-->
+            <Button
+                android:id="@+id/main_setting"
+                style="@style/main_bg"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/main_setting" />
+
+            <!--帮助-->
+            <Button
+                android:id="@+id/main_help"
+                style="@style/main_bg"
+                android:background="@drawable/main_help" />
+
+            <!--商店-->
+            <Button
+                android:id="@+id/main_store"
+                style="@style/main_bg"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/main_store" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
