@@ -49,7 +49,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
     private var screenHeight = 0
 
     //信息布局的bottom
-    private var messageBottom = 0
+    private var messageBottom = 372
 
     //当前关卡模型数据
     private lateinit var level: Level
@@ -161,28 +161,10 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
         //设置游戏主题内容布局
         viewBinding.timeShow.layoutParams = layoutParams
-        viewBinding.timeShow.post {
-            kotlin.run {
-                messageBottom = viewBinding.timeShow.bottom
-                val paramsLinkLayout = viewBinding.linkLayout.layoutParams
-                paramsLinkLayout.height = screenHeight - messageBottom
-                viewBinding.linkLayout.layoutParams = paramsLinkLayout
-                //开始游戏
-                LinkManager.startGame(
-                    applicationContext,
-                    viewBinding.linkLayout,
-                    screenWidth,
-                    screenHeight - messageBottom - ScreenUtil.getNavigationBarHeight(
-                        applicationContext
-                    ),
-                    level.getLevelId(),
-                    level.getLevelMode()
-                )
-                //设置监听者
-                LinkManager.setListener(this@LinkActivity)
+        val paramsLinkLayout = viewBinding.linkLayout.layoutParams
+        paramsLinkLayout.height = screenHeight - messageBottom
+        viewBinding.linkLayout.layoutParams = paramsLinkLayout
 
-            }
-        }
 
         //手动调整道具的排列
         val tempProp = arrayOf(
@@ -220,11 +202,26 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         viewBinding.itemBomb.count = bombNum
         viewBinding.itemRefresh.count = refreshNum
 
+        //开始游戏
+        LinkManager.startGame(
+            applicationContext,
+            viewBinding.linkLayout,
+            screenWidth,
+            screenHeight - messageBottom - ScreenUtil.getNavigationBarHeight(
+                applicationContext
+            ),
+            level.getLevelId(),
+            level.getLevelMode()
+        )
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initListener() {
         super.initListener()
+        //设置监听者
+        LinkManager.setListener(this@LinkActivity)
+
         viewBinding.itemFight.setOnClickListener {
             Log.d(Constant.TAG, "拳头道具")
 
