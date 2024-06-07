@@ -117,7 +117,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun initView() {
         super.initView()
         screenWidth = ScreenUtil.getScreenWidth(applicationContext)
@@ -164,127 +164,9 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         viewBinding.timeShow.post {
             kotlin.run {
                 messageBottom = viewBinding.timeShow.bottom
-
                 val paramsLinkLayout = viewBinding.linkLayout.layoutParams
                 paramsLinkLayout.height = screenHeight - messageBottom
                 viewBinding.linkLayout.layoutParams = paramsLinkLayout
-
-                viewBinding.linkLayout.setOnTouchListener { _, event -> //获取触摸点相对于布局的坐标
-                    val x = event.x.toInt()
-                    val y = event.y.toInt()
-                    //触摸事件
-                    if (event.action == MotionEvent.ACTION_DOWN) {
-                        for (animal in LinkManager.getAnimals()) {
-                            //获取AnimalView实例的rect
-                            val rectF = RectF(
-                                animal.left.toFloat(),
-                                animal.top.toFloat(),
-                                animal.right.toFloat(),
-                                animal.bottom.toFloat()
-                            )
-
-                            //判断是否包含
-                            if (rectF.contains(
-                                    x.toFloat(),
-                                    y.toFloat()
-                                ) && animal.visibility == View.VISIBLE
-                            ) {
-                                //获取上一次触摸的AnimalView
-                                val lastAnimal = LinkManager.getLastAnimal()
-                                //如果触摸的是石头直接结束
-                                if (animal.getFlag() == -1) {
-                                    //播放无法点击音效
-                                    SoundPlayManager.getInstance(baseContext).play(5)
-                                    break
-                                }
-                                //如果不是第一次触摸 且 触摸的不是同一个点
-                                if (lastAnimal != null && lastAnimal != animal) {
-                                    Log.d(
-                                        Constant.TAG,
-                                        "$lastAnimal $animal"
-                                    )
-                                    //如果两者的图片相同，且两者可以连接
-                                    if (animal.getFlag() == lastAnimal.getFlag() &&
-                                        canMatchTwoAnimalWithTwoBreak(
-                                            LinkManager.getBoard(),
-                                            lastAnimal.getPoint()!!,
-                                            animal.getPoint()!!,
-                                            linkInfo
-                                        )
-                                    ) {
-                                        //播放无法点击音效
-                                        SoundPlayManager.getInstance(baseContext).play(3)
-                                        //当前点改变背景和动画
-                                        animal.changeAnimalBackground(LinkConstant.ANIMAL_SELECT_BG)
-                                        animationOnSelectAnimal(animal)
-                                        //画线
-                                        viewBinding.linkLayout.setLinkInfo(linkInfo)
-                                        //设置所有的宝可梦不可以点击
-                                        viewBinding.linkLayout.isEnabled = false
-                                        //延迟操作
-                                        Handler().postDelayed({ //播放消除音效
-                                            SoundPlayManager.getInstance(baseContext).play(4)
-                                            //修改模板
-                                            LinkManager.getBoard()[lastAnimal.getPoint()!!.x][lastAnimal.getPoint()!!.y] =
-                                                0
-                                            LinkManager.getBoard()[animal.getPoint()!!.x][animal.getPoint()!!.y] =
-                                                0
-                                            //粉碎
-                                            explosionField?.explode(lastAnimal)
-                                            explosionField?.explode(animal)
-                                            //隐藏
-                                            lastAnimal.visibility = View.INVISIBLE
-                                            lastAnimal.clearAnimation()
-                                            animal.visibility = View.INVISIBLE
-                                            animal.clearAnimation()
-                                            //上一个点置空
-                                            LinkManager.setLastAnimal(null)
-                                            //去线
-                                            viewBinding.linkLayout.setLinkInfo(null)
-                                            //获得金币
-                                            money += 2
-                                            viewBinding.linkMoneyText.text = money.toString()
-                                            //设置所有的宝可梦可以点击
-                                            viewBinding.linkLayout.isEnabled = true
-                                        }, 500)
-
-                                    } else {
-                                        //点击的两个图片不可以相连接
-                                        //播放点击音效
-                                        SoundPlayManager.getInstance(baseContext).play(3)
-
-                                        //上一个点恢复原样
-                                        lastAnimal.changeAnimalBackground(LinkConstant.ANIMAL_BG)
-                                        if (lastAnimal.animation != null) {
-                                            //清楚所有动画
-                                            lastAnimal.clearAnimation()
-                                        }
-
-                                        //设置当前点的背景颜色和动画
-                                        animal.changeAnimalBackground(LinkConstant.ANIMAL_SELECT_BG)
-                                        animationOnSelectAnimal(animal)
-
-                                        //将当前点作为选中点
-                                        LinkManager.setLastAnimal(animal)
-                                    }
-                                } else if (lastAnimal == null) {
-                                    //播放点击音效
-                                    SoundPlayManager.getInstance(baseContext).play(3)
-
-                                    //第一次触摸 当前点改变背景和动画
-                                    animal.changeAnimalBackground(LinkConstant.ANIMAL_SELECT_BG)
-                                    animationOnSelectAnimal(animal)
-
-                                    //将当前点作为选中点
-                                    LinkManager.setLastAnimal(animal)
-                                }
-                                break
-                            }
-                        }
-                    }
-                    true
-                }
-
                 //开始游戏
                 LinkManager.startGame(
                     applicationContext,
@@ -296,9 +178,9 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                     level.getLevelId(),
                     level.getLevelMode()
                 )
-
                 //设置监听者
                 LinkManager.setListener(this@LinkActivity)
+
             }
         }
 
@@ -310,13 +192,10 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             viewBinding.linkPause
         )
         viewBinding.linkItems.post {
-
             //控制道具的大小
             val propSize = PxUtil.dpToPx(55, baseContext)
-
             //计算间距
             val padding: Int = (viewBinding.linkItems.width - propSize * 4) / 5
-
             //依次设置位置
             for (i in tempProp.indices) {
                 //设置约束
@@ -343,6 +222,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initListener() {
         super.initListener()
         viewBinding.itemFight.setOnClickListener {
@@ -430,6 +310,123 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             transaction.replace(R.id.root_link, pause, "pause")
             transaction.commit()
         }
+
+        viewBinding.linkLayout.setOnTouchListener { _, event -> //获取触摸点相对于布局的坐标
+            val x = event.x.toInt()
+            val y = event.y.toInt()
+            //触摸事件
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                for (animal in LinkManager.getAnimals()) {
+                    //获取AnimalView实例的rect
+                    val rectF = RectF(
+                        animal.left.toFloat(),
+                        animal.top.toFloat(),
+                        animal.right.toFloat(),
+                        animal.bottom.toFloat()
+                    )
+
+                    //判断是否包含
+                    if (rectF.contains(
+                            x.toFloat(),
+                            y.toFloat()
+                        ) && animal.visibility == View.VISIBLE
+                    ) {
+                        //获取上一次触摸的AnimalView
+                        val lastAnimal = LinkManager.getLastAnimal()
+                        //如果触摸的是石头直接结束
+                        if (animal.getFlag() == -1) {
+                            //播放无法点击音效
+                            SoundPlayManager.getInstance(baseContext).play(5)
+                            break
+                        }
+                        //如果不是第一次触摸 且 触摸的不是同一个点
+                        if (lastAnimal != null && lastAnimal != animal) {
+                            Log.d(
+                                Constant.TAG,
+                                "$lastAnimal $animal"
+                            )
+                            //如果两者的图片相同，且两者可以连接
+                            if (animal.getFlag() == lastAnimal.getFlag() &&
+                                canMatchTwoAnimalWithTwoBreak(
+                                    LinkManager.getBoard(),
+                                    lastAnimal.getPoint()!!,
+                                    animal.getPoint()!!,
+                                    linkInfo
+                                )
+                            ) {
+                                //播放无法点击音效
+                                SoundPlayManager.getInstance(baseContext).play(3)
+                                //当前点改变背景和动画
+                                animal.changeAnimalBackground(LinkConstant.ANIMAL_SELECT_BG)
+                                animationOnSelectAnimal(animal)
+                                //画线
+                                viewBinding.linkLayout.setLinkInfo(linkInfo)
+                                //设置所有的宝可梦不可以点击
+                                viewBinding.linkLayout.isEnabled = false
+                                //延迟操作
+                                Handler().postDelayed({ //播放消除音效
+                                    SoundPlayManager.getInstance(baseContext).play(4)
+                                    //修改模板
+                                    LinkManager.getBoard()[lastAnimal.getPoint()!!.x][lastAnimal.getPoint()!!.y] =
+                                        0
+                                    LinkManager.getBoard()[animal.getPoint()!!.x][animal.getPoint()!!.y] =
+                                        0
+                                    //粉碎
+                                    explosionField?.explode(lastAnimal)
+                                    explosionField?.explode(animal)
+                                    //隐藏
+                                    lastAnimal.visibility = View.INVISIBLE
+                                    lastAnimal.clearAnimation()
+                                    animal.visibility = View.INVISIBLE
+                                    animal.clearAnimation()
+                                    //上一个点置空
+                                    LinkManager.setLastAnimal(null)
+                                    //去线
+                                    viewBinding.linkLayout.setLinkInfo(null)
+                                    //获得金币
+                                    money += 2
+                                    viewBinding.linkMoneyText.text = money.toString()
+                                    //设置所有的宝可梦可以点击
+                                    viewBinding.linkLayout.isEnabled = true
+                                }, 500)
+
+                            } else {
+                                //点击的两个图片不可以相连接
+                                //播放点击音效
+                                SoundPlayManager.getInstance(baseContext).play(3)
+
+                                //上一个点恢复原样
+                                lastAnimal.changeAnimalBackground(LinkConstant.ANIMAL_BG)
+                                if (lastAnimal.animation != null) {
+                                    //清楚所有动画
+                                    lastAnimal.clearAnimation()
+                                }
+
+                                //设置当前点的背景颜色和动画
+                                animal.changeAnimalBackground(LinkConstant.ANIMAL_SELECT_BG)
+                                animationOnSelectAnimal(animal)
+
+                                //将当前点作为选中点
+                                LinkManager.setLastAnimal(animal)
+                            }
+                        } else if (lastAnimal == null) {
+                            //播放点击音效
+                            SoundPlayManager.getInstance(baseContext).play(3)
+
+                            //第一次触摸 当前点改变背景和动画
+                            animal.changeAnimalBackground(LinkConstant.ANIMAL_SELECT_BG)
+                            animationOnSelectAnimal(animal)
+
+                            //将当前点作为选中点
+                            LinkManager.setLastAnimal(animal)
+                        }
+                        break
+                    }
+                }
+            }
+            true
+        }
+
     }
 
     override fun onPause() {
