@@ -19,8 +19,7 @@ object LinkUtil {
      */
     fun setBoardsStatus(status: Boolean) {
         //获取所有宝可梦视图
-        val manager = LinkManager
-        val animals: List<AnimalView> = manager.getAnimals()
+        val animals: List<AnimalView> = LinkManager.getAnimals()
         for (i in animals.indices) {
             animals[i].isEnabled = status
         }
@@ -166,16 +165,15 @@ object LinkUtil {
      * @return
      */
     fun getRealAnimalPoint(point: AnimalPoint, context: Context): AnimalPoint {
-        val manager = LinkManager
         return AnimalPoint(
-            manager.getPaddingHor() + PxUtil.dpToPx(
-                manager.getAnimalSize(),
+            LinkManager.getPaddingHor() + PxUtil.dpToPx(
+                LinkManager.getAnimalSize(),
                 context
-            ) / 2 + point.y * PxUtil.dpToPx(manager.getAnimalSize(), context),
-            manager.getPaddingVer() + PxUtil.dpToPx(
-                manager.getAnimalSize(),
+            ) / 2 + point.y * PxUtil.dpToPx(LinkManager.getAnimalSize(), context),
+            LinkManager.getPaddingVer() + PxUtil.dpToPx(
+                LinkManager.getAnimalSize(),
                 context
-            ) / 2 + point.x * PxUtil.dpToPx(manager.getAnimalSize(), context)
+            ) / 2 + point.x * PxUtil.dpToPx(LinkManager.getAnimalSize(), context)
         )
     }
 

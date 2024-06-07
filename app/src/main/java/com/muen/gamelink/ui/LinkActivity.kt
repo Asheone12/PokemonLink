@@ -63,9 +63,6 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
     //存储点的信息集合
     private lateinit var linkInfo: LinkInfo
 
-    //游戏管理者
-    private lateinit var manager: LinkManager
-
     //记录金币的变量
     private var money = 0
 
@@ -127,7 +124,6 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         screenHeight = ScreenUtil.getScreenHeight(applicationContext)
 
         linkInfo = LinkInfo()
-        manager = LinkManager
         //创建分碎视图的类
         explosionField = ExplosionField.attach2Window(this)
 
@@ -178,7 +174,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                     val y = event.y.toInt()
                     //触摸事件
                     if (event.action == MotionEvent.ACTION_DOWN) {
-                        for (animal in manager.getAnimals()) {
+                        for (animal in LinkManager.getAnimals()) {
                             //获取AnimalView实例的rect
                             val rectF = RectF(
                                 animal.left.toFloat(),
@@ -194,7 +190,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                 ) && animal.visibility == View.VISIBLE
                             ) {
                                 //获取上一次触摸的AnimalView
-                                val lastAnimal = manager.getLastAnimal()
+                                val lastAnimal = LinkManager.getLastAnimal()
                                 //如果触摸的是石头直接结束
                                 if (animal.getFlag() == -1) {
                                     //播放无法点击音效
@@ -210,7 +206,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                     //如果两者的图片相同，且两者可以连接
                                     if (animal.getFlag() == lastAnimal.getFlag() &&
                                         canMatchTwoAnimalWithTwoBreak(
-                                            manager.getBoard(),
+                                            LinkManager.getBoard(),
                                             lastAnimal.getPoint()!!,
                                             animal.getPoint()!!,
                                             linkInfo
@@ -229,9 +225,9 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                         Handler().postDelayed({ //播放消除音效
                                             SoundPlayManager.getInstance(baseContext).play(4)
                                             //修改模板
-                                            manager.getBoard()[lastAnimal.getPoint()!!.x][lastAnimal.getPoint()!!.y] =
+                                            LinkManager.getBoard()[lastAnimal.getPoint()!!.x][lastAnimal.getPoint()!!.y] =
                                                 0
-                                            manager.getBoard()[animal.getPoint()!!.x][animal.getPoint()!!.y] =
+                                            LinkManager.getBoard()[animal.getPoint()!!.x][animal.getPoint()!!.y] =
                                                 0
                                             //粉碎
                                             explosionField?.explode(lastAnimal)
@@ -242,7 +238,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                             animal.visibility = View.INVISIBLE
                                             animal.clearAnimation()
                                             //上一个点置空
-                                            manager.setLastAnimal(null)
+                                            LinkManager.setLastAnimal(null)
                                             //去线
                                             viewBinding.linkLayout.setLinkInfo(null)
                                             //获得金币
@@ -269,7 +265,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                         animationOnSelectAnimal(animal)
 
                                         //将当前点作为选中点
-                                        manager.setLastAnimal(animal)
+                                        LinkManager.setLastAnimal(animal)
                                     }
                                 } else if (lastAnimal == null) {
                                     //播放点击音效
@@ -280,7 +276,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                     animationOnSelectAnimal(animal)
 
                                     //将当前点作为选中点
-                                    manager.setLastAnimal(animal)
+                                    LinkManager.setLastAnimal(animal)
                                 }
                                 break
                             }
@@ -290,7 +286,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                 }
 
                 //开始游戏
-                manager.startGame(
+                LinkManager.startGame(
                     applicationContext,
                     viewBinding.linkLayout,
                     screenWidth,
@@ -302,7 +298,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                 )
 
                 //设置监听者
-                manager.setListener(this@LinkActivity)
+                LinkManager.setListener(this@LinkActivity)
             }
         }
 
@@ -354,7 +350,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
             if (fightNum > 0) {
                 //随机消除一对可以消除的AnimalView
-                manager.fightGame(this@LinkActivity)
+                LinkManager.fightGame(this@LinkActivity)
 
                 //数量减1
                 fightNum--
@@ -374,7 +370,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
             if (bombNum > 0) {
                 //随机消除某一种所有的AnimalView
-                manager.bombGame(this@LinkActivity)
+                LinkManager.bombGame(this@LinkActivity)
 
                 //数量减1
                 bombNum--
@@ -395,7 +391,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
             if (refreshNum > 0) {
                 //刷新游戏
-                manager.refreshGame(
+                LinkManager.refreshGame(
                     applicationContext,
                     viewBinding.linkLayout,
                     screenWidth,
@@ -424,7 +420,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             Log.d(Constant.TAG, "暂停")
             //暂停游戏
             //1.定时器暂停
-            manager.pauseGame()
+            LinkManager.pauseGame()
             //2.添加一个fragment
             val transaction = supportFragmentManager.beginTransaction()
             val pause = PauseFragment()
@@ -438,22 +434,22 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     override fun onPause() {
         super.onPause()
-        manager.pauseGame()
+        LinkManager.pauseGame()
     }
 
     override fun onResume() {
         super.onResume()
         //开启游戏
-        if (manager.isPause()) {
-            manager.pauseGame()
+        if (LinkManager.isPause()) {
+            LinkManager.pauseGame()
         }
     }
 
     override fun onTimeChanged(time: Float) {
         //如果时间小于0
         if (time <= 0.0) {
-            manager.pauseGame()
-            manager.endGame(this, level, time)
+            LinkManager.pauseGame()
+            LinkManager.endGame(this, level, time)
         } else {
             //保留小数后一位
             viewBinding.timeShow.progress = time
@@ -462,10 +458,10 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         //如果board全部清除了
         if (LinkUtil.getBoardState()) {
             //结束游戏
-            manager.pauseGame()
+            LinkManager.pauseGame()
             level.setLevelTime((LinkConstant.TIME - time))
             level.setLevelState(LinkUtil.getStarByTime(time.toInt()))
-            manager.endGame(this, level, time)
+            LinkManager.endGame(this, level, time)
 
             //关卡结算
             level.update(level.getId().toLong())
