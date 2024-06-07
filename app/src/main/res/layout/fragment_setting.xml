@@ -133,6 +133,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/view_setting_finish"
+                    android:gravity="center"
                     android:text="@string/FinishText"
                     android:textColor="#ffffff"
                     android:textSize="24dp"

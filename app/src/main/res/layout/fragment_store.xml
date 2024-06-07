@@ -307,7 +307,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/view_store"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-60dp"
+        android:layout_marginBottom="-40dp"
         android:src="@drawable/view_store_banner" />
 
     <!--关闭按钮-->
