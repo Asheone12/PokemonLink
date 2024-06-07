@@ -1,5 +1,6 @@
 package com.muen.gamelink.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.DisplayMetrics
 import android.util.Log
@@ -16,7 +17,6 @@ object ScreenUtil {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         //存储尺寸的
         val displayMetrics = DisplayMetrics()
-        assert(windowManager != null)
         windowManager.defaultDisplay.getRealMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
@@ -31,7 +31,6 @@ object ScreenUtil {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         //存储尺寸的
         val displayMetrics = DisplayMetrics()
-        assert(windowManager != null)
         windowManager.defaultDisplay.getRealMetrics(displayMetrics)
         return displayMetrics.heightPixels
     }
@@ -41,17 +40,12 @@ object ScreenUtil {
      * @param context
      * @return
      */
+    @SuppressLint("InternalInsetResource")
     fun getStateBarHeight(context: Context): Int {
-        var statusHeight = -1
-        try {
-            val clazz = Class.forName("com.android.internal.R\$dimen")
-            val `object` = clazz.newInstance()
-            val height = clazz.getField("status_bar_height")[`object`].toString().toInt()
-            statusHeight = context.resources.getDimensionPixelSize(height)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return statusHeight
+        val resId = context.resources.getIdentifier(
+            "status_bar_height", "dimen", "android"
+        )
+        return context.resources.getDimensionPixelSize(resId)
     }
 
     /**
