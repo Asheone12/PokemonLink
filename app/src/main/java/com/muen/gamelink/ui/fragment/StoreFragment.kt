@@ -9,8 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import com.muen.gamelink.databinding.FragmentStoreBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.game.constant.mode.ItemMode
-import com.muen.gamelink.model.Item
-import com.muen.gamelink.model.User
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.source.local.dao.ItemDao
 import com.muen.gamelink.source.local.dao.UserDao
@@ -118,13 +116,13 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
      */
     private fun refreshSQLite(mode: ItemMode) {
         //道具对象
-        val item = Item()
         when (mode) {
             ItemMode.ITEM_FIGHT -> {
                 user_money -= fight_money
                 fight_num++
-                item.setItemNumber(fight_num)
-                item.update(1)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    itemDao.updateItemNumberByType(fight_num,1)
+                }
 
                 //道具购买提示
                 Toast.makeText(
@@ -137,8 +135,9 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
             ItemMode.ITEM_BOMB -> {
                 user_money -= bomb_money
                 bomb_num++
-                item.setItemNumber(bomb_num)
-                item.update(2)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    itemDao.updateItemNumberByType(bomb_num,2)
+                }
 
                 //道具购买提示
                 Toast.makeText(
@@ -151,8 +150,9 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
             ItemMode.ITEM_REFRESH -> {
                 user_money -= refresh_money
                 refresh_num++
-                item.setItemNumber(refresh_num)
-                item.update(3)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    itemDao.updateItemNumberByType(refresh_num,3)
+                }
 
                 //道具购买提示
                 Toast.makeText(
@@ -164,9 +164,9 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
         }
 
         //刷新用户数据
-        val user = User()
-        user.setUserMoney(user_money)
-        user.update(1)
+        lifecycleScope.launch(Dispatchers.IO) {
+            userDao.updateUserMoneyById(user_money,"1001")
+        }
 
         //重新设置金币
         viewBinding.storeUserMoney.text = user_money.toString()

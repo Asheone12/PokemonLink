@@ -101,7 +101,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             //查询用户数据
             user = userDao.loadUsers()[0]
             money = user.userMoney
-
+            Log.d(Constant.TAG,"金币 = $money")
             items = itemDao.loadItems()
             for (item in items) {
                 if (item.itemType == ItemMode.ITEM_FIGHT.value) {
