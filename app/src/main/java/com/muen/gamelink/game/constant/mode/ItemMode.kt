@@ -6,8 +6,7 @@ package com.muen.gamelink.game.constant.mode
 enum class ItemMode(
     val value: Int
 ) {
-
-    ITEM_FIGHT(1),    //简单模式
-    ITEM_BOMB(2),     //普通模式
-    ITEM_REFRESH(3)   //困难模式
+    ITEM_FIGHT(1),    //拳套
+    ITEM_BOMB(2),     //炸弹
+    ITEM_REFRESH(3)   //刷新
 }
