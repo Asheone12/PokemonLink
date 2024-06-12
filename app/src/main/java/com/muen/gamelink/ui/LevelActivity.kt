@@ -9,8 +9,8 @@ import com.muen.gamelink.R
 import com.muen.gamelink.databinding.ActivityLevelBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.game.constant.mode.LevelState
-import com.muen.gamelink.model.Level
 import com.muen.gamelink.music.SoundPlayManager
+import com.muen.gamelink.source.local.entity.TLevel
 import com.muen.gamelink.util.PxUtil
 import com.muen.gamelink.util.ScreenUtil
 import com.muen.gamelink.widget.MyImageView
@@ -26,7 +26,7 @@ class LevelActivity : BaseActivity<ActivityLevelBinding>() {
     private var mode: String? = null
 
     //关卡数据
-    private var levels: List<Level>? = null
+    private var levels: List<TLevel>? = null
 
     //确定总页数
     private var pager = 0
@@ -42,15 +42,6 @@ class LevelActivity : BaseActivity<ActivityLevelBinding>() {
         val bundle = intent.extras!!
         mode = bundle.getString("mode")
         levels = bundle.getParcelableArrayList("levels")
-
-        //依次查询每一个内容
-        Log.d(Constant.TAG, "--------")
-        Log.d(Constant.TAG, mode!!)
-        assert(levels != null)
-        Log.d(Constant.TAG, levels!!.size.toString() + "")
-        for (level in levels!!) {
-            Log.d(Constant.TAG, level.toString())
-        }
     }
 
     override fun initView() {
@@ -105,7 +96,7 @@ class LevelActivity : BaseActivity<ActivityLevelBinding>() {
 
                     //创建视图
                     val myImageView = MyImageView(applicationContext)
-                    myImageView.changeLevelState(LevelState.getState(levels!![i].getLevelState()))
+                    myImageView.changeLevelState(LevelState.getState(levels!![i].levelState))
 
                     //设置id
                     myImageView.id = i
@@ -140,10 +131,10 @@ class LevelActivity : BaseActivity<ActivityLevelBinding>() {
                     //点击事件
                     myImageView.setOnClickListener { v -> //播放点击音效
                         SoundPlayManager.getInstance(baseContext).play(3)
-                        Log.d(Constant.TAG, "关卡" + v.id)
+                        Log.d(Constant.TAG, "关卡${+ v.id},状态${levels!![v.id].levelState}" )
 
                         //判断是否可以进入该关卡
-                        if (LevelState.getState(levels!![v.id].getLevelState()) != LevelState.LEVEL_STATE_NO) {
+                        if (LevelState.getState(levels!![v.id].levelState) != LevelState.LEVEL_STATE_NO) {
                             jumpToLinkActivity(levels!![v.id])
                         } else {
                             Toast.makeText(
@@ -163,7 +154,7 @@ class LevelActivity : BaseActivity<ActivityLevelBinding>() {
     /**
      * 界面跳转
      */
-    private fun jumpToLinkActivity(level: Level?) {
+    private fun jumpToLinkActivity(level: TLevel?) {
         //跳转界面
         val intent = Intent(this, LinkActivity::class.java)
         //加入数据

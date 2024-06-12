@@ -21,6 +21,12 @@ interface LevelDao {
     fun selectLevelById(id: Int): List<TLevel>
 
     /**
+     * 根据mode查询对应关卡
+     */
+    @Query("select * from T_Level where levelMode = :mode")
+    fun selectLevelByMode(mode: Int): List<TLevel>
+
+    /**
      * 添加关卡
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -29,18 +35,18 @@ interface LevelDao {
     /**
      * 更新关卡时间
      */
-    @Query("update T_Level set levelTime = :time")
-    suspend fun updateLevelTime(time: Float)
+    @Query("update T_Level set levelTime = :time where id = :id")
+    suspend fun updateLevelTimeById(time: Float,id: Int)
 
     /**
      * 更新关卡模式
      */
-    @Query("update T_Level set levelMode = :mode")
-    suspend fun updateLevelMode(mode: Int)
+    @Query("update T_Level set levelMode = :mode where id = :id")
+    suspend fun updateLevelModeById(mode: Int,id: Int)
 
     /**
      * 更新关卡通关状态
      */
-    @Query("update T_Level set levelState = :state")
-    suspend fun updateLevelState(state: Int)
+    @Query("update T_Level set levelState = :state where id = :id")
+    suspend fun updateLevelStateById(state: Int,id: Int)
 }

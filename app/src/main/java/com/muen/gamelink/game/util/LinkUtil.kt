@@ -130,13 +130,13 @@ object LinkUtil {
      * @param time
      * @return
      */
-    fun getStarByTime(time: Int): Char {
+    fun getStarByTime(time: Int): Int {
         return if (time <= 40) {
-            '1'
+            1
         } else if (time <= 60) {
-            '2'
+            2
         } else {
-            '3'
+            3
         }
     }
 
@@ -183,7 +183,7 @@ object LinkUtil {
      * @param level_mode
      * @return
      */
-    fun loadLevelWithIdAndMode(levelId: Int, levelMode: Char): Array<IntArray> {
+    fun loadLevelWithIdAndMode(levelId: Int, levelMode: Int): Array<IntArray> {
 
         //1.先判断是什么类型的关卡
         val BOARD: Array<Array<IntArray>> =

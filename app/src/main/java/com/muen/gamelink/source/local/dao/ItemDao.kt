@@ -29,12 +29,12 @@ interface ItemDao {
     /**
      * 更新道具数量
      */
-    @Query("update T_Item set itemNumber = :number")
-    suspend fun updateItemNumber(number: Int)
+    @Query("update T_Item set itemNumber = :number where itemType = :type")
+    suspend fun updateItemNumberByType(number: Int,type: Int)
 
     /**
      * 更新道具价格
      */
-    @Query("update T_Item set itemPrice = :price")
-    suspend fun updateItemPrice(price: Int)
+    @Query("update T_Item set itemPrice = :price where itemType = :type")
+    suspend fun updateItemPriceByType(price: Int,type: Int)
 }

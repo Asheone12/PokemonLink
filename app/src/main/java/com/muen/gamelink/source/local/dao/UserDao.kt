@@ -29,12 +29,12 @@ interface UserDao {
     /**
      * 更新用户金钱
      */
-    @Query("update T_User set userMoney = :money")
-    suspend fun updateUserMoney(money: Int)
+    @Query("update T_User set userMoney = :money where userId = :id")
+    suspend fun updateUserMoneyById(money: Int,id: String)
 
     /**
      * 更新用户背景
      */
-    @Query("update T_User set userBackground = :background")
-    suspend fun updateUserBackground(background: Int)
+    @Query("update T_User set userBackground = :background where userId = :id")
+    suspend fun updateUserBackgroundById(background: Int,id: String)
 }

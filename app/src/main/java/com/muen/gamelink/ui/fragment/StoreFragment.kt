@@ -5,13 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.muen.gamelink.databinding.FragmentStoreBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.game.constant.mode.ItemMode
 import com.muen.gamelink.model.Item
 import com.muen.gamelink.model.User
 import com.muen.gamelink.music.SoundPlayManager
-import org.litepal.LitePal
+import com.muen.gamelink.source.local.dao.ItemDao
+import com.muen.gamelink.source.local.dao.UserDao
+import com.muen.gamelink.source.local.db.GameDB
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class StoreFragment : BaseFragment<FragmentStoreBinding>() {
     //存储数据
@@ -23,6 +28,9 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
     private var refresh_money = 0
     private var refresh_num = 0
 
+    private lateinit var itemDao: ItemDao
+    private lateinit var userDao: UserDao
+
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,29 +41,31 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
 
     override fun initData() {
         super.initData()
-
-        //查询用户数据
-        val users: List<User> = LitePal.findAll(User::class.java)
-        val user: User = users[0]
-        //存储用户数据
-        user_money = user.getUserMoney()
-        //查询道具数据
-        val items: List<Item> = LitePal.findAll(Item::class.java)
-        for (item in items) {
-            if (item.getItemType() == ItemMode.ITEM_FIGHT.value) {
-                //拳头道具
-                fight_money = item.getItemPrice()
-                fight_num = item.getItemNumber()
-            } else if (item.getItemType() == ItemMode.ITEM_BOMB.value) {
-                //炸弹道具
-                bomb_money = item.getItemPrice()
-                bomb_num = item.getItemNumber()
-            } else {
-                //刷新道具
-                refresh_money = item.getItemPrice()
-                refresh_num = item.getItemNumber()
+        itemDao = GameDB.getDatabase(requireContext()).itemDao()
+        userDao =  GameDB.getDatabase(requireContext()).userDao()
+        lifecycleScope.launch(Dispatchers.IO) {
+            //查询用户数据
+            val user = userDao.loadUsers()[0]
+            user_money = user.userMoney
+            //查询道具数据
+            val itemList = itemDao.loadItems()
+            for(item in itemList){
+                if (item.itemType == ItemMode.ITEM_FIGHT.value) {
+                    //拳头道具
+                    fight_money = item.itemPrice
+                    fight_num = item.itemNumber
+                } else if (item.itemType == ItemMode.ITEM_BOMB.value) {
+                    //炸弹道具
+                    bomb_money = item.itemPrice
+                    bomb_num = item.itemNumber
+                } else {
+                    //刷新道具
+                    refresh_money = item.itemPrice
+                    refresh_num = item.itemNumber
+                }
             }
         }
+
     }
 
     override fun initView() {

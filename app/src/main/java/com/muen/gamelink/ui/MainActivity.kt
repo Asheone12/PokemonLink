@@ -13,11 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import com.muen.gamelink.R
 import com.muen.gamelink.databinding.ActivityMainBinding
 import com.muen.gamelink.game.constant.Constant
-import com.muen.gamelink.model.Item
-import com.muen.gamelink.model.Level
-import com.muen.gamelink.model.User
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
+import com.muen.gamelink.source.local.dao.ItemDao
+import com.muen.gamelink.source.local.dao.LevelDao
+import com.muen.gamelink.source.local.dao.UserDao
 import com.muen.gamelink.source.local.db.GameDB
 import com.muen.gamelink.source.local.entity.TItem
 import com.muen.gamelink.source.local.entity.TLevel
@@ -28,10 +28,16 @@ import com.muen.gamelink.ui.fragment.StoreFragment
 import com.muen.gamelink.util.PxUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.litepal.LitePal
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var mBroadcastReceiver: BroadcastReceiver
+
+    //查找当前数据库的内容
+    private lateinit var itemDao:ItemDao
+    private lateinit var levelDao:LevelDao
+    private lateinit var userDao:UserDao
+
+    private lateinit var mContext: Context
 
     override fun onCreateViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
@@ -39,15 +45,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initData() {
         super.initData()
+        mContext = this
+
         //提前加载资源，不然的话，资源没有加载好，会没有声音
         SoundPlayManager.getInstance(this)
 
-        //初始化数据库 LitePal
-        LitePal.initialize(this)
-        val db = LitePal.getDatabase()
-
         //向数据库装入数据
-        initSQLite()
         initRoom()
 
         //播放音乐
@@ -96,81 +99,63 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             Log.d(Constant.TAG, "简单模式按钮")
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            //查询简单模式的数据
-            val levels: List<Level> =
-                LitePal.where("levelMode == ?", "1").find(Level::class.java)
-            Log.d(Constant.TAG, levels.size.toString() + "")
-            //依次查询每一个内容
-            for (level in levels) {
-                Log.d(Constant.TAG, level.toString())
+            lifecycleScope.launch(Dispatchers.IO) {
+                val levelList = levelDao.selectLevelByMode(1)
+                //跳转界面
+                val intentEasy = Intent(mContext, LevelActivity::class.java)
+                //加入数据
+                val bundleEasy = Bundle()
+                //加入关卡模式数据
+                bundleEasy.putString("mode", "简单")
+                //加入关卡数据
+                bundleEasy.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
+                intentEasy.putExtras(bundleEasy)
+                //跳转
+                startActivity(intentEasy)
             }
-            //跳转界面
-            val intentEasy = Intent(this, LevelActivity::class.java)
-            //加入数据
-            val bundleEasy = Bundle()
-            //加入关卡模式数据
-            bundleEasy.putString("mode", "简单")
-            //加入关卡数据
-            bundleEasy.putParcelableArrayList("levels", levels as ArrayList<out Parcelable>)
-            intentEasy.putExtras(bundleEasy)
-            //跳转
-            startActivity(intentEasy)
+
         }
 
         viewBinding.mainModeNormal.setOnClickListener {
             Log.d(Constant.TAG, "普通模式按钮")
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            //查询简单模式的数据
-            val levels: List<Level> =
-                LitePal.where("levelMode == ?", "2").find(Level::class.java)
-            Log.d(Constant.TAG, levels.size.toString() + "")
-            //依次查询每一个内容
-            for (level in levels) {
-                Log.d(Constant.TAG, level.toString())
+            //查询普通模式的数据
+            lifecycleScope.launch(Dispatchers.IO) {
+                val levelList = levelDao.selectLevelByMode(2)
+                //跳转界面
+                val intentNormal = Intent(mContext, LevelActivity::class.java)
+                //加入数据
+                val bundleNormal = Bundle()
+                //加入关卡模式数据
+                bundleNormal.putString("mode", "普通")
+                //加入关卡数据
+                bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
+                intentNormal.putExtras(bundleNormal)
+                //跳转
+                startActivity(intentNormal)
             }
-            //跳转界面
-            val intentNormal = Intent(this, LevelActivity::class.java)
-            //加入数据
-            val bundleNormal = Bundle()
-            //加入关卡模式数据
-            bundleNormal.putString("mode", "简单")
-            //加入关卡数据
-            bundleNormal.putParcelableArrayList(
-                "levels",
-                levels as java.util.ArrayList<out Parcelable?>
-            )
-            intentNormal.putExtras(bundleNormal)
-            //跳转
-            startActivity(intentNormal)
         }
 
         viewBinding.mainModeHard.setOnClickListener {
             Log.d(Constant.TAG, "困难模式按钮")
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            //查询简单模式的数据
-            val levels: List<Level> =
-                LitePal.where("levelMode == ?", "3").find(Level::class.java)
-            Log.d(Constant.TAG, levels.size.toString() + "")
-            //依次查询每一个内容
-            for (level in levels) {
-                Log.d(Constant.TAG, level.toString())
+            //查询困难模式的数据
+            lifecycleScope.launch(Dispatchers.IO) {
+                val levelList = levelDao.selectLevelByMode(3)
+                //跳转界面
+                val intentNormal = Intent(mContext, LevelActivity::class.java)
+                //加入数据
+                val bundleNormal = Bundle()
+                //加入关卡模式数据
+                bundleNormal.putString("mode", "困难")
+                //加入关卡数据
+                bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
+                intentNormal.putExtras(bundleNormal)
+                //跳转
+                startActivity(intentNormal)
             }
-            //跳转界面
-            val intentHard = Intent(this, LevelActivity::class.java)
-            //加入数据
-            val bundleHard = Bundle()
-            //加入关卡模式数据
-            bundleHard.putString("mode", "简单")
-            //加入关卡数据
-            bundleHard.putParcelableArrayList(
-                "levels",
-                levels as java.util.ArrayList<out Parcelable?>
-            )
-            intentHard.putExtras(bundleHard)
-            //跳转
-            startActivity(intentHard)
         }
 
         viewBinding.mainSetting.setOnClickListener {
@@ -251,119 +236,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     /**
-     * 初始化数据库
-     */
-    private fun initSQLite() {
-        //查找当前数据库的内容
-        val users: List<User> = LitePal.findAll(User::class.java)
-        val levels: List<Level> = LitePal.findAll(Level::class.java)
-        val props: List<Item> = LitePal.findAll(Item::class.java)
-
-        //如果用户数据为空，装入数据
-        if (users.isEmpty()) {
-            val user = User()
-            user.setUserMoney(1000)
-            user.setUserBackground(0)
-            user.save()
-        }
-
-        //如果关卡数据为空，装入数据
-        if (levels.isEmpty()) {
-            //简单模式
-            for (i in 1..40) {
-                val level = Level()
-                //设置关卡号
-                level.setLevelId(i)
-                //设置关卡模式
-                level.setLevelMode('1')
-                //设置关卡的闯关状态
-                if (i == 1) {
-                    level.setLevelState('4')
-                } else {
-                    level.setLevelState('0')
-                }
-                //设置关卡的闯关时间
-                level.setLevelTime(0f)
-
-                //插入
-                level.save()
-            }
-
-            //普通模式
-            for (i in 1..40) {
-                val level = Level()
-                //设置关卡号
-                level.setLevelId(i)
-                //设置关卡模式
-                level.setLevelMode('2')
-                //设置关卡的闯关状态
-                if (i == 1) {
-                    level.setLevelState('4')
-                } else {
-                    level.setLevelState('0')
-                }
-                //设置关卡的闯关时间
-                level.setLevelTime(0f)
-
-                //插入
-                level.save()
-            }
-
-            //困难模式
-            for (i in 1..40) {
-                val level = Level()
-                //设置关卡号
-                level.setLevelId(i)
-                //设置关卡模式
-                level.setLevelMode('3')
-                //设置关卡的闯关状态
-                if (i == 1) {
-                    level.setLevelState('4')
-                } else {
-                    level.setLevelState('0')
-                }
-                //设置关卡的闯关时间
-                level.setLevelTime(0f)
-
-                //插入
-                level.save()
-            }
-        }
-
-        //如果道具数据为空，装入数据
-        if (props.isEmpty()) {
-            //1.装入拳头道具
-            val prop_fight = Item()
-            prop_fight.setItemType('1')
-            prop_fight.setItemNumber(9)
-            prop_fight.setItemPrice(10)
-            prop_fight.save()
-
-            //2.装入炸弹道具
-            val prop_bomb = Item()
-            prop_bomb.setItemType('2')
-            prop_bomb.setItemNumber(9)
-            prop_bomb.setItemPrice(10)
-            prop_bomb.save()
-
-            //3.装入刷新道具
-            val prop_refresh = Item()
-            prop_refresh.setItemType('3')
-            prop_refresh.setItemNumber(9)
-            prop_refresh.setItemPrice(10)
-            prop_refresh.save()
-        }
-    }
-
-    /**
      * 初始化room
      */
     private fun initRoom() {
-        //查找当前数据库的内容
-        val itemDao = GameDB.getDatabase(this).itemDao()
-        val levelDao = GameDB.getDatabase(this).levelDao()
-        val userDao = GameDB.getDatabase(this).userDao()
-
+        itemDao = GameDB.getDatabase(this).itemDao()
+        levelDao = GameDB.getDatabase(this).levelDao()
+        userDao =  GameDB.getDatabase(this).userDao()
         //如果用户数据为空，装入数据
         lifecycleScope.launch(Dispatchers.IO) {
             val userList = userDao.loadUsers()

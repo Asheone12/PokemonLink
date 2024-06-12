@@ -20,9 +20,9 @@ import com.muen.gamelink.game.constant.LinkConstant
 import com.muen.gamelink.game.entity.AnimalPoint
 import com.muen.gamelink.game.util.LinkUtil
 import com.muen.gamelink.game.view.AnimalView
-import com.muen.gamelink.model.Level
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
+import com.muen.gamelink.source.local.entity.TLevel
 import com.muen.gamelink.ui.FailureActivity
 import com.muen.gamelink.ui.SuccessActivity
 import com.muen.gamelink.util.PxUtil
@@ -92,7 +92,7 @@ object LinkManager {
         width: Int,
         height: Int,
         levelId: Int,
-        levelMode: Char
+        levelMode: Int
     ) {
         //清楚上一次游戏的痕迹
         clearLastGame()
@@ -358,7 +358,7 @@ object LinkManager {
         width: Int,
         height: Int,
         level_id: Int,
-        level_mode: Char,
+        level_mode: Int,
         link_activity: Activity?
     ) {
         //0.播放消除音效以及粉碎
@@ -409,7 +409,7 @@ object LinkManager {
      * @param level
      * @param time
      */
-    fun endGame(context: Context, level: Level?, time: Float) {
+    fun endGame(context: Context, level: TLevel?, time: Float) {
         if (time < 0.1) {
             Log.d(Constant.TAG, "失败啦")
 
