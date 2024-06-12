@@ -17,6 +17,7 @@ import com.muen.gamelink.source.local.db.GameDB
 import com.muen.gamelink.source.local.entity.TLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
     //关卡
@@ -97,20 +98,26 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
     private fun jumpToActivity(flag: Int) {
         if (flag == 0) {
             lifecycleScope.launch(Dispatchers.IO) {
-                val levelList = levelDao.selectLevelByMode(level.levelMode)
-                //跳转界面
-                val intent = Intent(mContext, LevelActivity::class.java)
-                //加入数据
-                val bundle = Bundle()
-                //加入关卡模式数据
-                bundle.putString("mode", "简单")
-                //加入关卡数据
-                bundle.putParcelableArrayList(
-                    "levels",
-                    levelList as java.util.ArrayList<out Parcelable?>
-                )
-                intent.putExtras(bundle)
-                startActivity(intent)
+                levelDao.selectLevelByMode(level.levelMode).collect{
+                    val levelList = it
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //跳转界面
+                        val intent = Intent(mContext, LevelActivity::class.java)
+                        //加入数据
+                        val bundle = Bundle()
+                        //加入关卡模式数据
+                        bundle.putString("mode", "简单")
+                        //加入关卡数据
+                        bundle.putParcelableArrayList(
+                            "levels",
+                            levelList as java.util.ArrayList<out Parcelable?>
+                        )
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                    }
+                }
+
             }
 
         } else if (flag == 1) {
@@ -124,16 +131,23 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
             startActivity(intent)
         } else {
             lifecycleScope.launch(Dispatchers.IO) {
-                val nextLevel = levelDao.selectLevelById(level.id + 1)[0]
-                //跳转界面
-                val intent = Intent(mContext, LinkActivity::class.java)
-                //加入数据
-                val bundle = Bundle()
-                //加入关卡数据
-                bundle.putParcelable("level", nextLevel)
-                intent.putExtras(bundle)
-                //跳转
-                startActivity(intent)
+                levelDao.selectLevelById(level.id + 1).collect{
+                    val nextLevel = it[0]
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //跳转界面
+                        val intent = Intent(mContext, LinkActivity::class.java)
+                        //加入数据
+                        val bundle = Bundle()
+                        //加入关卡数据
+                        bundle.putParcelable("level", nextLevel)
+                        intent.putExtras(bundle)
+                        //跳转
+                        startActivity(intent)
+                    }
+
+                }
+
             }
 
         }

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.muen.gamelink.source.local.entity.TItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
@@ -12,13 +13,13 @@ interface ItemDao {
      * 查询所有道具
      */
     @Query("select * from T_Item")
-    fun loadItems(): List<TItem>
+    fun loadItems(): Flow<List<TItem>>
 
     /**
      * 根据道具类型查询对应道具
      */
     @Query("select * from T_Item where itemType = :type")
-    fun selectItemByType(type: String): List<TItem>
+    fun selectItemByType(type: String): Flow<List<TItem>>
 
     /**
      * 添加道具

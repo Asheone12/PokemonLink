@@ -99,25 +99,31 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
         lifecycleScope.launch(Dispatchers.IO) {
             //查询用户数据
-            user = userDao.loadUsers()[0]
-            money = user.userMoney
-            Log.d(Constant.TAG,"金币 = $money")
-            items = itemDao.loadItems()
-            for (item in items) {
-                if (item.itemType == ItemMode.ITEM_FIGHT.value) {
-                    //拳头道具
-                    fightNum = item.itemNumber
-                    Log.d(Constant.TAG, "查询的消除道具数量：$fightNum")
-                } else if (item.itemType == ItemMode.ITEM_BOMB.value) {
-                    //炸弹道具
-                    bombNum = item.itemNumber
-                    Log.d(Constant.TAG, "查询的炸弹道具数量：$bombNum")
-                } else {
-                    //刷新道具
-                    refreshNum = item.itemNumber
-                    Log.d(Constant.TAG, "查询的刷新道具数量：$refreshNum")
+            userDao.loadUsers().collect{
+                user = it[0]
+                money = user.userMoney
+                Log.d(Constant.TAG,"金币 = $money")
+            }
+
+
+            itemDao.loadItems().collect{
+                for (item in it) {
+                    if (item.itemType == ItemMode.ITEM_FIGHT.value) {
+                        //拳头道具
+                        fightNum = item.itemNumber
+                        Log.d(Constant.TAG, "查询的消除道具数量：$fightNum")
+                    } else if (item.itemType == ItemMode.ITEM_BOMB.value) {
+                        //炸弹道具
+                        bombNum = item.itemNumber
+                        Log.d(Constant.TAG, "查询的炸弹道具数量：$bombNum")
+                    } else {
+                        //刷新道具
+                        refreshNum = item.itemNumber
+                        Log.d(Constant.TAG, "查询的刷新道具数量：$refreshNum")
+                    }
                 }
             }
+
         }
 
     }
@@ -469,9 +475,11 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                 //关卡结算
                 levelDao.insertLevel(level)
                 //下一关判断
-                val nextLevel = levelDao.selectLevelById(level.id + 1)[0]
-                if(nextLevel.levelState == 0){
-                    levelDao.updateLevelStateById(4,nextLevel.id)
+                levelDao.selectLevelById(level.id + 1).collect{
+                    val nextLevel = it[0]
+                    if(nextLevel.levelState == 0){
+                        levelDao.updateLevelStateById(4,nextLevel.id)
+                    }
                 }
 
                 //金币道具清算

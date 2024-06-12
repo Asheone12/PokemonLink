@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.muen.gamelink.databinding.FragmentPauseBinding
 import com.muen.gamelink.game.constant.mode.LevelState
@@ -17,6 +18,7 @@ import com.muen.gamelink.ui.LevelActivity
 import com.muen.gamelink.ui.LinkActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PauseFragment : BaseFragment<FragmentPauseBinding>() {
     private lateinit var level: TLevel
@@ -42,17 +44,23 @@ class PauseFragment : BaseFragment<FragmentPauseBinding>() {
         viewBinding.btnMenu.setOnClickListener {
             SoundPlayManager.getInstance(requireContext()).play(3)
             lifecycleScope.launch(Dispatchers.IO) {
-                val levelList = levelDao.selectLevelByMode(level.levelMode)
-                //跳转界面
-                val intent = Intent(activity, LevelActivity::class.java)
-                //加入数据
-                val bundle = Bundle()
-                //加入关卡模式数据
-                bundle.putString("mode", "简单")
-                //加入关卡数据
-                bundle.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable?>)
-                intent.putExtras(bundle)
-                startActivity(intent)
+                levelDao.selectLevelByMode(level.levelMode).collect{
+                    val levelList = it
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //跳转界面
+                        val intent = Intent(activity, LevelActivity::class.java)
+                        //加入数据
+                        val bundle = Bundle()
+                        //加入关卡模式数据
+                        bundle.putString("mode", "简单")
+                        //加入关卡数据
+                        bundle.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable?>)
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                    }
+                }
+
             }
 
         }
@@ -73,20 +81,27 @@ class PauseFragment : BaseFragment<FragmentPauseBinding>() {
             SoundPlayManager.getInstance(requireContext()).play(3)
             lifecycleScope.launch(Dispatchers.IO) {
                 //下一关，加入关卡数据
-                val nextLevel = levelDao.selectLevelById(level.id + 1)[0]
-                //判断是否开启
-                if(nextLevel.levelState != LevelState.LEVEL_STATE_NO.value){
-                    //跳转界面
-                    val intent = Intent(activity, LinkActivity::class.java)
-                    //加入数据
-                    val bundle = Bundle()
-                    bundle.putParcelable("level", nextLevel)
-                    intent.putExtras(bundle)
-                    //跳转
-                    startActivity(intent)
-                }else{
-                    //Toast.makeText(activity, "下一关还没有开启", Toast.LENGTH_SHORT).show()
+                levelDao.selectLevelById(level.id + 1).collect{
+                    val nextLevel = it[0]
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //判断是否开启
+                        if(nextLevel.levelState != LevelState.LEVEL_STATE_NO.value){
+                            //跳转界面
+                            val intent = Intent(activity, LinkActivity::class.java)
+                            //加入数据
+                            val bundle = Bundle()
+                            bundle.putParcelable("level", nextLevel)
+                            intent.putExtras(bundle)
+                            //跳转
+                            startActivity(intent)
+                        }else{
+                            Toast.makeText(activity, "下一关还没有开启", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                 }
+
             }
 
         }

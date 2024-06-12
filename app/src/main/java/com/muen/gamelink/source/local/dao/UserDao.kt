@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.muen.gamelink.source.local.entity.TUser
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -12,13 +13,13 @@ interface UserDao {
      * 查询所有用户
      */
     @Query("select * from T_User")
-    fun loadUsers(): List<TUser>
+    fun loadUsers(): Flow<List<TUser>>
 
     /**
      * 查询指定用户
      */
     @Query("select * from T_User where userId = :userId")
-    fun selectUserById(userId: String): List<TUser>
+    fun selectUserById(userId: String): Flow<List<TUser>>
 
     /**
      * 添加用户

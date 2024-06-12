@@ -28,6 +28,7 @@ import com.muen.gamelink.ui.fragment.StoreFragment
 import com.muen.gamelink.util.PxUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var mBroadcastReceiver: BroadcastReceiver
@@ -100,18 +101,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
             lifecycleScope.launch(Dispatchers.IO) {
-                val levelList = levelDao.selectLevelByMode(1)
-                //跳转界面
-                val intentEasy = Intent(mContext, LevelActivity::class.java)
-                //加入数据
-                val bundleEasy = Bundle()
-                //加入关卡模式数据
-                bundleEasy.putString("mode", "简单")
-                //加入关卡数据
-                bundleEasy.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
-                intentEasy.putExtras(bundleEasy)
-                //跳转
-                startActivity(intentEasy)
+                levelDao.selectLevelByMode(1).collect{
+                    val levelList = it
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //跳转界面
+                        val intentEasy = Intent(mContext, LevelActivity::class.java)
+                        //加入数据
+                        val bundleEasy = Bundle()
+                        //加入关卡模式数据
+                        bundleEasy.putString("mode", "简单")
+                        //加入关卡数据
+                        bundleEasy.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
+                        intentEasy.putExtras(bundleEasy)
+                        //跳转
+                        startActivity(intentEasy)
+                    }
+                }
+
             }
 
         }
@@ -122,18 +129,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             SoundPlayManager.getInstance(baseContext).play(3)
             //查询普通模式的数据
             lifecycleScope.launch(Dispatchers.IO) {
-                val levelList = levelDao.selectLevelByMode(2)
-                //跳转界面
-                val intentNormal = Intent(mContext, LevelActivity::class.java)
-                //加入数据
-                val bundleNormal = Bundle()
-                //加入关卡模式数据
-                bundleNormal.putString("mode", "普通")
-                //加入关卡数据
-                bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
-                intentNormal.putExtras(bundleNormal)
-                //跳转
-                startActivity(intentNormal)
+                levelDao.selectLevelByMode(2).collect{
+                    val levelList = it
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //跳转界面
+                        val intentNormal = Intent(mContext, LevelActivity::class.java)
+                        //加入数据
+                        val bundleNormal = Bundle()
+                        //加入关卡模式数据
+                        bundleNormal.putString("mode", "普通")
+                        //加入关卡数据
+                        bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
+                        intentNormal.putExtras(bundleNormal)
+                        //跳转
+                        startActivity(intentNormal)
+                    }
+                }
+
             }
         }
 
@@ -143,18 +156,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             SoundPlayManager.getInstance(baseContext).play(3)
             //查询困难模式的数据
             lifecycleScope.launch(Dispatchers.IO) {
-                val levelList = levelDao.selectLevelByMode(3)
-                //跳转界面
-                val intentNormal = Intent(mContext, LevelActivity::class.java)
-                //加入数据
-                val bundleNormal = Bundle()
-                //加入关卡模式数据
-                bundleNormal.putString("mode", "困难")
-                //加入关卡数据
-                bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
-                intentNormal.putExtras(bundleNormal)
-                //跳转
-                startActivity(intentNormal)
+                levelDao.selectLevelByMode(3).collect{
+                    val levelList = it
+                    //切换到主线程
+                    withContext(Dispatchers.Main){
+                        //跳转界面
+                        val intentNormal = Intent(mContext, LevelActivity::class.java)
+                        //加入数据
+                        val bundleNormal = Bundle()
+                        //加入关卡模式数据
+                        bundleNormal.putString("mode", "困难")
+                        //加入关卡数据
+                        bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
+                        intentNormal.putExtras(bundleNormal)
+                        //跳转
+                        startActivity(intentNormal)
+                    }
+
+                }
+
             }
         }
 
@@ -244,57 +264,59 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         userDao =  GameDB.getDatabase(this).userDao()
         //如果用户数据为空，装入数据
         lifecycleScope.launch(Dispatchers.IO) {
-            val userList = userDao.loadUsers()
-            if (userList.isEmpty()) {
-                userDao.insertUser(TUser("1001", 1000, 0))
+            userDao.loadUsers().collect{
+                if(it.isEmpty()){
+                    userDao.insertUser(TUser("1001", 1000, 0))
+                }
             }
         }
 
         //如果关卡数据为空，装入数据
         lifecycleScope.launch(Dispatchers.IO) {
-            val levelList = levelDao.loadLevels()
-            if (levelList.isEmpty()) {
-                //简单模式
-                for (i in 1..40) {
-                    if (i == 1) {
-                        levelDao.insertLevel(TLevel(i,0f,1,4))
-                    } else {
-                        levelDao.insertLevel(TLevel(i,0f,1,0))
+            levelDao.loadLevels().collect{
+                if(it.isEmpty()){
+                    //简单模式
+                    for (i in 1..40) {
+                        if (i == 1) {
+                            levelDao.insertLevel(TLevel(i,0f,1,4))
+                        } else {
+                            levelDao.insertLevel(TLevel(i,0f,1,0))
+                        }
+                    }
+
+                    //普通模式
+                    for (i in 1..40) {
+                        if (i == 1) {
+                            levelDao.insertLevel(TLevel(i,0f,2,4))
+                        } else {
+                            levelDao.insertLevel(TLevel(i,0f,2,0))
+                        }
+                    }
+
+                    //困难模式
+                    for (i in 1..40) {
+                        if (i == 1) {
+                            levelDao.insertLevel(TLevel(i,0f,3,4))
+                        } else {
+                            levelDao.insertLevel(TLevel(i,0f,3,0))
+                        }
                     }
                 }
-
-                //普通模式
-                for (i in 1..40) {
-                    if (i == 1) {
-                        levelDao.insertLevel(TLevel(i,0f,2,4))
-                    } else {
-                        levelDao.insertLevel(TLevel(i,0f,2,0))
-                    }
-                }
-
-                //困难模式
-                for (i in 1..40) {
-                    if (i == 1) {
-                        levelDao.insertLevel(TLevel(i,0f,3,4))
-                    } else {
-                        levelDao.insertLevel(TLevel(i,0f,3,0))
-                    }
-                }
-
             }
 
         }
 
         //如果道具数据为空，装入数据
         lifecycleScope.launch(Dispatchers.IO) {
-            val itemList = itemDao.loadItems()
-            if(itemList.isEmpty()){
-                //1.装入拳头道具
-                itemDao.insertItem(TItem(1,9,10))
-                //2.装入炸弹道具
-                itemDao.insertItem(TItem(2,9,10))
-                //3.装入刷新道具
-                itemDao.insertItem(TItem(3,9,10))
+            itemDao.loadItems().collect{
+                if(it.isEmpty()){
+                    //1.装入拳头道具
+                    itemDao.insertItem(TItem(1,9,10))
+                    //2.装入炸弹道具
+                    itemDao.insertItem(TItem(2,9,10))
+                    //3.装入刷新道具
+                    itemDao.insertItem(TItem(3,9,10))
+                }
             }
         }
 

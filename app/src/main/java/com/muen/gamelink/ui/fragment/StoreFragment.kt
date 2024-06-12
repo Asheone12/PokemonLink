@@ -43,25 +43,31 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
         userDao =  GameDB.getDatabase(requireContext()).userDao()
         lifecycleScope.launch(Dispatchers.IO) {
             //查询用户数据
-            val user = userDao.loadUsers()[0]
-            user_money = user.userMoney
+            userDao.loadUsers().collect{
+                val user = it[0]
+                user_money = user.userMoney
+            }
+
             //查询道具数据
-            val itemList = itemDao.loadItems()
-            for(item in itemList){
-                if (item.itemType == ItemMode.ITEM_FIGHT.value) {
-                    //拳头道具
-                    fight_money = item.itemPrice
-                    fight_num = item.itemNumber
-                } else if (item.itemType == ItemMode.ITEM_BOMB.value) {
-                    //炸弹道具
-                    bomb_money = item.itemPrice
-                    bomb_num = item.itemNumber
-                } else {
-                    //刷新道具
-                    refresh_money = item.itemPrice
-                    refresh_num = item.itemNumber
+            itemDao.loadItems().collect{
+                val itemList = it
+                for(item in itemList){
+                    if (item.itemType == ItemMode.ITEM_FIGHT.value) {
+                        //拳头道具
+                        fight_money = item.itemPrice
+                        fight_num = item.itemNumber
+                    } else if (item.itemType == ItemMode.ITEM_BOMB.value) {
+                        //炸弹道具
+                        bomb_money = item.itemPrice
+                        bomb_num = item.itemNumber
+                    } else {
+                        //刷新道具
+                        refresh_money = item.itemPrice
+                        refresh_num = item.itemNumber
+                    }
                 }
             }
+
         }
 
     }
