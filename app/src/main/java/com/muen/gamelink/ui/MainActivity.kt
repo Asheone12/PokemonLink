@@ -9,6 +9,7 @@ import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
 import com.muen.gamelink.R
 import com.muen.gamelink.databinding.ActivityMainBinding
 import com.muen.gamelink.game.constant.Constant
@@ -17,10 +18,16 @@ import com.muen.gamelink.model.Level
 import com.muen.gamelink.model.User
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
+import com.muen.gamelink.source.local.db.GameDB
+import com.muen.gamelink.source.local.entity.TItem
+import com.muen.gamelink.source.local.entity.TLevel
+import com.muen.gamelink.source.local.entity.TUser
 import com.muen.gamelink.ui.fragment.HelpFragment
 import com.muen.gamelink.ui.fragment.SettingFragment
 import com.muen.gamelink.ui.fragment.StoreFragment
 import com.muen.gamelink.util.PxUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.litepal.LitePal
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -41,6 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         //向数据库装入数据
         initSQLite()
+        initRoom()
 
         //播放音乐
         playMusic()
@@ -345,6 +353,73 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             prop_refresh.setItemPrice(10)
             prop_refresh.save()
         }
+    }
+
+    /**
+     * 初始化room
+     */
+    private fun initRoom() {
+        //查找当前数据库的内容
+        val itemDao = GameDB.getDatabase(this).itemDao()
+        val levelDao = GameDB.getDatabase(this).levelDao()
+        val userDao = GameDB.getDatabase(this).userDao()
+
+        //如果用户数据为空，装入数据
+        lifecycleScope.launch(Dispatchers.IO) {
+            val userList = userDao.loadUsers()
+            if (userList.isEmpty()) {
+                userDao.insertUser(TUser("1001", 1000, 0))
+            }
+        }
+
+        //如果关卡数据为空，装入数据
+        lifecycleScope.launch(Dispatchers.IO) {
+            val levelList = levelDao.loadLevels()
+            if (levelList.isEmpty()) {
+                //简单模式
+                for (i in 1..40) {
+                    if (i == 1) {
+                        levelDao.insertLevel(TLevel(i,0f,1,4))
+                    } else {
+                        levelDao.insertLevel(TLevel(i,0f,1,0))
+                    }
+                }
+
+                //普通模式
+                for (i in 1..40) {
+                    if (i == 1) {
+                        levelDao.insertLevel(TLevel(i,0f,2,4))
+                    } else {
+                        levelDao.insertLevel(TLevel(i,0f,2,0))
+                    }
+                }
+
+                //困难模式
+                for (i in 1..40) {
+                    if (i == 1) {
+                        levelDao.insertLevel(TLevel(i,0f,3,4))
+                    } else {
+                        levelDao.insertLevel(TLevel(i,0f,3,0))
+                    }
+                }
+
+            }
+
+        }
+
+        //如果道具数据为空，装入数据
+        lifecycleScope.launch(Dispatchers.IO) {
+            val itemList = itemDao.loadItems()
+            if(itemList.isEmpty()){
+                //1.装入拳头道具
+                itemDao.insertItem(TItem(1,9,10))
+                //2.装入炸弹道具
+                itemDao.insertItem(TItem(2,9,10))
+                //3.装入刷新道具
+                itemDao.insertItem(TItem(3,9,10))
+            }
+        }
+
     }
 
 
