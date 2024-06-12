@@ -11,6 +11,7 @@ import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.game.constant.mode.LevelState
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.source.local.entity.TLevel
+import com.muen.gamelink.ui.base.BaseActivity
 import com.muen.gamelink.util.PxUtil
 import com.muen.gamelink.util.ScreenUtil
 import com.muen.gamelink.widget.MyImageView

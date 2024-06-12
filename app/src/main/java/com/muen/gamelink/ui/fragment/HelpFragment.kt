@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.muen.gamelink.databinding.FragmentHelpBinding
 import com.muen.gamelink.music.SoundPlayManager
+import com.muen.gamelink.ui.base.BaseFragment
 
 class HelpFragment : BaseFragment<FragmentHelpBinding>() {
     override fun onCreateViewBinding(

@@ -13,6 +13,7 @@ import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.source.local.dao.ItemDao
 import com.muen.gamelink.source.local.dao.UserDao
 import com.muen.gamelink.source.local.db.GameDB
+import com.muen.gamelink.ui.base.BaseFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

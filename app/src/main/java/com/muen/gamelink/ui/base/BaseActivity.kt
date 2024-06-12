@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui
+package com.muen.gamelink.ui.base
 
 import android.os.Bundle
 import android.text.Editable

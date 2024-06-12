@@ -10,6 +10,7 @@ import com.muen.gamelink.databinding.FragmentSettingBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
+import com.muen.gamelink.ui.base.BaseFragment
 
 
 class SettingFragment : BaseFragment<FragmentSettingBinding>() {
