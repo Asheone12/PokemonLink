@@ -394,8 +394,6 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             viewModel.level.levelTime = LinkConstant.TIME - time
             viewModel.level.levelState = LinkUtil.getStarByTime(time.toInt())
             LinkManager.endGame(this, viewModel.level, time)
-            //关卡结算
-            viewModel.levelEnd()
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.muen.gamelink.source.local.entity.TLevel
 import kotlinx.coroutines.flow.Flow
 
@@ -32,6 +33,12 @@ interface LevelDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLevel(vararg level: TLevel)
+
+    /**
+     * 更新关卡
+     */
+    @Update
+    suspend fun updateLevel(level:TLevel)
 
     /**
      * 更新关卡时间

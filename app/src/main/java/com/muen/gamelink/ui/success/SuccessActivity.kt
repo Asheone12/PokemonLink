@@ -32,6 +32,7 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
         val bundle = intent.extras!!
         viewModel.level = bundle.getParcelable("level")!!
         viewModel.serialClick = bundle.getInt("serial_click")
+        viewModel.gameEnd()
     }
 
     override fun initView() {

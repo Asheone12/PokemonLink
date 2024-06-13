@@ -40,4 +40,21 @@ class SuccessVM @Inject constructor(
 
         }
     }
+
+    /**
+     * 关卡结算
+     */
+    fun gameEnd(){
+        viewModelScope.launch(Dispatchers.IO) {
+            //关卡结算
+            levelDao.updateLevel(level)
+            //下一关判断
+            levelDao.selectLevelById(level.id + 1).collect{
+                val nextLevel = it[0]
+                if(nextLevel.levelState == 0){
+                    levelDao.updateLevelStateById(4,nextLevel.id)
+                }
+            }
+        }
+    }
 }

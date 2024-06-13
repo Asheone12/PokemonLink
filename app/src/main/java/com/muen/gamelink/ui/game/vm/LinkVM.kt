@@ -92,20 +92,4 @@ class LinkVM @Inject constructor(
         }
     }
 
-    /**
-     * 关卡结算
-     */
-    fun levelEnd(){
-        viewModelScope.launch(Dispatchers.IO) {
-            //关卡结算
-            levelDao.insertLevel(level)
-            //下一关判断
-            levelDao.selectLevelById(level.id + 1).collect{
-                val nextLevel = it[0]
-                if(nextLevel.levelState == 0){
-                    levelDao.updateLevelStateById(4,nextLevel.id)
-                }
-            }
-        }
-    }
 }
