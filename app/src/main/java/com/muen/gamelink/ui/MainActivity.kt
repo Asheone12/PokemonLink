@@ -27,10 +27,12 @@ import com.muen.gamelink.ui.fragment.HelpFragment
 import com.muen.gamelink.ui.fragment.SettingFragment
 import com.muen.gamelink.ui.fragment.StoreFragment
 import com.muen.gamelink.util.PxUtil
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var mBroadcastReceiver: BroadcastReceiver
 
