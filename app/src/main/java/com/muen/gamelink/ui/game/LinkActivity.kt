@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui
+package com.muen.gamelink.ui.game
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -34,8 +34,8 @@ import com.muen.gamelink.source.local.db.GameDB
 import com.muen.gamelink.source.local.entity.TItem
 import com.muen.gamelink.source.local.entity.TLevel
 import com.muen.gamelink.source.local.entity.TUser
-import com.muen.gamelink.ui.base.BaseActivity
-import com.muen.gamelink.ui.fragment.PauseFragment
+import com.muen.gamelink.ui.BaseActivity
+import com.muen.gamelink.ui.game.fragment.PauseFragment
 import com.muen.gamelink.util.PxUtil
 import com.muen.gamelink.util.ScreenUtil
 import kotlinx.coroutines.Dispatchers

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     android:background="@drawable/main_bg"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <!--包裹布局-->
     <LinearLayout

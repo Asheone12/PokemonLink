@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.fragment
+package com.muen.gamelink.ui.main.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,7 @@ import com.muen.gamelink.databinding.FragmentSettingBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.ui.base.BaseFragment
+import com.muen.gamelink.ui.BaseFragment
 
 
 class SettingFragment : BaseFragment<FragmentSettingBinding>() {

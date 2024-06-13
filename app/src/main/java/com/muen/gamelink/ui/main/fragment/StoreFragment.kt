@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.fragment
+package com.muen.gamelink.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.muen.gamelink.databinding.FragmentStoreBinding
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.ui.base.BaseFragment
-import com.muen.gamelink.ui.fragment.vm.StoreVM
+import com.muen.gamelink.ui.BaseFragment
+import com.muen.gamelink.ui.main.fragment.vm.StoreVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

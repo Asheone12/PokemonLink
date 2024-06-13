@@ -1,11 +1,11 @@
-package com.muen.gamelink.ui.fragment
+package com.muen.gamelink.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.muen.gamelink.databinding.FragmentHelpBinding
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.ui.base.BaseFragment
+import com.muen.gamelink.ui.BaseFragment
 
 class HelpFragment : BaseFragment<FragmentHelpBinding>() {
     override fun onCreateViewBinding(

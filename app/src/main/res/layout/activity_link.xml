@@ -9,7 +9,7 @@
 
     android:clipChildren="false"
 
-    tools:context=".ui.LinkActivity">
+    tools:context=".ui.game.LinkActivity">
 
     <!--关卡，道具，暂停信息-->
     <RelativeLayout
