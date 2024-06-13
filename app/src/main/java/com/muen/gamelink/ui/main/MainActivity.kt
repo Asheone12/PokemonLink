@@ -9,40 +9,25 @@ import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
-import androidx.lifecycle.lifecycleScope
+import androidx.activity.viewModels
 import com.muen.gamelink.R
 import com.muen.gamelink.databinding.ActivityMainBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.source.local.dao.ItemDao
-import com.muen.gamelink.source.local.dao.LevelDao
-import com.muen.gamelink.source.local.dao.UserDao
-import com.muen.gamelink.source.local.db.GameDB
-import com.muen.gamelink.source.local.entity.TItem
-import com.muen.gamelink.source.local.entity.TLevel
-import com.muen.gamelink.source.local.entity.TUser
 import com.muen.gamelink.ui.BaseActivity
+import com.muen.gamelink.ui.level.LevelActivity
 import com.muen.gamelink.ui.main.fragment.HelpFragment
 import com.muen.gamelink.ui.main.fragment.SettingFragment
 import com.muen.gamelink.ui.main.fragment.StoreFragment
-import com.muen.gamelink.ui.level.LevelActivity
+import com.muen.gamelink.ui.main.vm.MainVM
 import com.muen.gamelink.util.PxUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+    private val viewModel by viewModels<MainVM>()
     private lateinit var mBroadcastReceiver: BroadcastReceiver
-
-    //查找当前数据库的内容
-    private lateinit var itemDao:ItemDao
-    private lateinit var levelDao:LevelDao
-    private lateinit var userDao:UserDao
-
-    private lateinit var mContext: Context
 
     override fun onCreateViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
@@ -50,17 +35,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initData() {
         super.initData()
-        mContext = this
-
         //提前加载资源，不然的话，资源没有加载好，会没有声音
         SoundPlayManager.getInstance(this)
-
         //向数据库装入数据
-        initRoom()
-
+        viewModel.initDatabase()
         //播放音乐
         playMusic()
-
         //广播接受者
         mBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -99,115 +79,89 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initListener() {
         super.initListener()
-
+        //简单模式
         viewBinding.mainModeEasy.setOnClickListener {
-            Log.d(Constant.TAG, "简单模式按钮")
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            lifecycleScope.launch(Dispatchers.IO) {
-                levelDao.selectLevelByMode(1).collect{
-                    val levelList = it
-                    //切换到主线程
-                    withContext(Dispatchers.Main){
-                        //跳转界面
-                        val intentEasy = Intent(mContext, LevelActivity::class.java)
-                        //加入数据
-                        val bundleEasy = Bundle()
-                        //加入关卡模式数据
-                        bundleEasy.putString("mode", "简单")
-                        //加入关卡数据
-                        bundleEasy.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
-                        intentEasy.putExtras(bundleEasy)
-                        //跳转
-                        startActivity(intentEasy)
-                    }
-                }
-
+            //查询简单模式的数据
+            viewModel.selectLevelData(1){
+                //跳转界面
+                val intentEasy = Intent(this, LevelActivity::class.java)
+                //加入数据
+                val bundleEasy = Bundle()
+                //加入关卡模式数据
+                bundleEasy.putString("mode", "简单")
+                //加入关卡数据
+                bundleEasy.putParcelableArrayList("levels", it as ArrayList<out Parcelable>)
+                intentEasy.putExtras(bundleEasy)
+                //跳转
+                startActivity(intentEasy)
             }
 
         }
-
+        //普通模式
         viewBinding.mainModeNormal.setOnClickListener {
-            Log.d(Constant.TAG, "普通模式按钮")
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
             //查询普通模式的数据
-            lifecycleScope.launch(Dispatchers.IO) {
-                levelDao.selectLevelByMode(2).collect{
-                    val levelList = it
-                    //切换到主线程
-                    withContext(Dispatchers.Main){
-                        //跳转界面
-                        val intentNormal = Intent(mContext, LevelActivity::class.java)
-                        //加入数据
-                        val bundleNormal = Bundle()
-                        //加入关卡模式数据
-                        bundleNormal.putString("mode", "普通")
-                        //加入关卡数据
-                        bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
-                        intentNormal.putExtras(bundleNormal)
-                        //跳转
-                        startActivity(intentNormal)
-                    }
-                }
-
+            viewModel.selectLevelData(2){
+                //跳转界面
+                val intentNormal = Intent(this, LevelActivity::class.java)
+                //加入数据
+                val bundleNormal = Bundle()
+                //加入关卡模式数据
+                bundleNormal.putString("mode", "普通")
+                //加入关卡数据
+                bundleNormal.putParcelableArrayList("levels", it as ArrayList<out Parcelable>)
+                intentNormal.putExtras(bundleNormal)
+                //跳转
+                startActivity(intentNormal)
             }
         }
-
+        //困难模式
         viewBinding.mainModeHard.setOnClickListener {
-            Log.d(Constant.TAG, "困难模式按钮")
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
             //查询困难模式的数据
-            lifecycleScope.launch(Dispatchers.IO) {
-                levelDao.selectLevelByMode(3).collect{
-                    val levelList = it
-                    //切换到主线程
-                    withContext(Dispatchers.Main){
-                        //跳转界面
-                        val intentNormal = Intent(mContext, LevelActivity::class.java)
-                        //加入数据
-                        val bundleNormal = Bundle()
-                        //加入关卡模式数据
-                        bundleNormal.putString("mode", "困难")
-                        //加入关卡数据
-                        bundleNormal.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable>)
-                        intentNormal.putExtras(bundleNormal)
-                        //跳转
-                        startActivity(intentNormal)
-                    }
-
-                }
-
+            viewModel.selectLevelData(3){
+                //跳转界面
+                val intentNormal = Intent(this, LevelActivity::class.java)
+                //加入数据
+                val bundleNormal = Bundle()
+                //加入关卡模式数据
+                bundleNormal.putString("mode", "困难")
+                //加入关卡数据
+                bundleNormal.putParcelableArrayList("levels", it as ArrayList<out Parcelable>)
+                intentNormal.putExtras(bundleNormal)
+                //跳转
+                startActivity(intentNormal)
             }
         }
-
+        //设置
         viewBinding.mainSetting.setOnClickListener {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
             //fragment事务
             val manager = supportFragmentManager
             val transaction = manager.beginTransaction()
-            Log.d(Constant.TAG, "设置按钮")
             //添加一个fragment
             val setting = SettingFragment()
             transaction.replace(R.id.root_main, setting, "setting")
             transaction.commit()
         }
-
+        //帮助
         viewBinding.mainHelp.setOnClickListener {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
             //fragment事务
             val manager = supportFragmentManager
             val transaction = manager.beginTransaction()
-            Log.d(Constant.TAG, "帮助按钮")
             //添加一个fragment
             val help = HelpFragment()
             transaction.replace(R.id.root_main, help, "help")
             transaction.commit()
         }
-
+        //商店
         viewBinding.mainStore.setOnClickListener {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
@@ -258,73 +212,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             )
         }
     }
-
-    /**
-     * 初始化room
-     */
-    private fun initRoom() {
-        itemDao = GameDB.getDatabase(this).itemDao()
-        levelDao = GameDB.getDatabase(this).levelDao()
-        userDao =  GameDB.getDatabase(this).userDao()
-        //如果用户数据为空，装入数据
-        lifecycleScope.launch(Dispatchers.IO) {
-            userDao.loadUsers().collect{
-                if(it.isEmpty()){
-                    userDao.insertUser(TUser("1001", 1000, 0))
-                }
-            }
-        }
-
-        //如果关卡数据为空，装入数据
-        lifecycleScope.launch(Dispatchers.IO) {
-            levelDao.loadLevels().collect{
-                if(it.isEmpty()){
-                    //简单模式
-                    for (i in 1..40) {
-                        if (i == 1) {
-                            levelDao.insertLevel(TLevel(i,0f,1,4))
-                        } else {
-                            levelDao.insertLevel(TLevel(i,0f,1,0))
-                        }
-                    }
-
-                    //普通模式
-                    for (i in 1..40) {
-                        if (i == 1) {
-                            levelDao.insertLevel(TLevel(i,0f,2,4))
-                        } else {
-                            levelDao.insertLevel(TLevel(i,0f,2,0))
-                        }
-                    }
-
-                    //困难模式
-                    for (i in 1..40) {
-                        if (i == 1) {
-                            levelDao.insertLevel(TLevel(i,0f,3,4))
-                        } else {
-                            levelDao.insertLevel(TLevel(i,0f,3,0))
-                        }
-                    }
-                }
-            }
-
-        }
-
-        //如果道具数据为空，装入数据
-        lifecycleScope.launch(Dispatchers.IO) {
-            itemDao.loadItems().collect{
-                if(it.isEmpty()){
-                    //1.装入拳头道具
-                    itemDao.insertItem(TItem(1,9,10))
-                    //2.装入炸弹道具
-                    itemDao.insertItem(TItem(2,9,10))
-                    //3.装入刷新道具
-                    itemDao.insertItem(TItem(3,9,10))
-                }
-            }
-        }
-
-    }
-
 
 }

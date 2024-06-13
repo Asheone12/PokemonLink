@@ -15,37 +15,31 @@ import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import androidx.activity.viewModels
 import com.muen.gamelink.R
 import com.muen.gamelink.databinding.ActivityLinkBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.game.constant.LinkConstant
-import com.muen.gamelink.game.constant.mode.ItemMode
 import com.muen.gamelink.game.entity.LinkInfo
 import com.muen.gamelink.game.manager.LinkManager
 import com.muen.gamelink.game.util.AnimalSearchUtil.canMatchTwoAnimalWithTwoBreak
 import com.muen.gamelink.game.util.LinkUtil
 import com.muen.gamelink.game.view.AnimalView
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.source.local.dao.ItemDao
-import com.muen.gamelink.source.local.dao.LevelDao
-import com.muen.gamelink.source.local.dao.UserDao
-import com.muen.gamelink.source.local.db.GameDB
-import com.muen.gamelink.source.local.entity.TItem
-import com.muen.gamelink.source.local.entity.TLevel
-import com.muen.gamelink.source.local.entity.TUser
 import com.muen.gamelink.ui.BaseActivity
 import com.muen.gamelink.ui.game.fragment.PauseFragment
+import com.muen.gamelink.ui.game.vm.LinkVM
 import com.muen.gamelink.util.PxUtil
 import com.muen.gamelink.util.ScreenUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 import tyrantgit.explosionfield.ExplosionField
 import kotlin.math.atan
 import kotlin.math.sqrt
 
 
+@AndroidEntryPoint
 class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
+    private val viewModel by viewModels<LinkVM>()
     //屏幕宽度,高度
     private var screenWidth = 0
     private var screenHeight = 0
@@ -53,33 +47,8 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
     //信息布局的bottom
     private var messageBottom = 372
 
-    private lateinit var itemDao: ItemDao
-    private lateinit var levelDao: LevelDao
-    private lateinit var userDao: UserDao
-
-    //当前关卡模型数据
-    private lateinit var level: TLevel
-
-    //用户
-    private lateinit var user: TUser
-
-    //道具
-    private lateinit var items: List<TItem>
-
     //存储点的信息集合
     private lateinit var linkInfo: LinkInfo
-
-    //记录金币的变量
-    private var money = 0
-
-    //记录拳头道具的数量
-    private var fightNum = 0
-
-    //记录炸弹道具的数量
-    private var bombNum = 0
-
-    //记录刷新道具的数量
-    private var refreshNum = 0
 
     //粉碎视图
     private var explosionField: ExplosionField? = null
@@ -90,43 +59,12 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     override fun initData() {
         super.initData()
-        itemDao = GameDB.getDatabase(this).itemDao()
-        levelDao = GameDB.getDatabase(this).levelDao()
-        userDao =  GameDB.getDatabase(this).userDao()
         //获取数据
         val intent = this.intent
         val bundle = intent.extras!!
-        level = bundle.getParcelable("level")!!
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            //查询用户数据
-            userDao.loadUsers().collect{
-                user = it[0]
-                money = user.userMoney
-                Log.d(Constant.TAG,"金币 = $money")
-            }
-
-
-            itemDao.loadItems().collect{
-                for (item in it) {
-                    if (item.itemType == ItemMode.ITEM_FIGHT.value) {
-                        //拳头道具
-                        fightNum = item.itemNumber
-                        Log.d(Constant.TAG, "查询的消除道具数量：$fightNum")
-                    } else if (item.itemType == ItemMode.ITEM_BOMB.value) {
-                        //炸弹道具
-                        bombNum = item.itemNumber
-                        Log.d(Constant.TAG, "查询的炸弹道具数量：$bombNum")
-                    } else {
-                        //刷新道具
-                        refreshNum = item.itemNumber
-                        Log.d(Constant.TAG, "查询的刷新道具数量：$refreshNum")
-                    }
-                }
-            }
-
-        }
-
+        viewModel.level = bundle.getParcelable("level")!!
+        viewModel.loadUsers()
+        viewModel.loadItems()
     }
 
 
@@ -207,12 +145,6 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                 tempProp[i].layoutParams = rlLayoutParams
             }
         }
-        //设置金币
-        viewBinding.linkMoneyText.text = money.toString()
-        //设置道具数量
-        viewBinding.itemFight.count = fightNum
-        viewBinding.itemBomb.count = bombNum
-        viewBinding.itemRefresh.count = refreshNum
 
         //开始游戏
         LinkManager.startGame(
@@ -222,8 +154,8 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             screenHeight - messageBottom - ScreenUtil.getNavigationBarHeight(
                 applicationContext
             ),
-            level.levelId,
-            level.levelMode
+            viewModel.level.levelId,
+            viewModel.level.levelMode
         )
 
     }
@@ -235,20 +167,13 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         LinkManager.setListener(this@LinkActivity)
 
         viewBinding.itemFight.setOnClickListener {
-            Log.d(Constant.TAG, "拳头道具")
-
-            if (fightNum > 0) {
+            if (viewModel.fightNum > 0) {
                 //随机消除一对可以消除的AnimalView
                 LinkManager.fightGame(this@LinkActivity)
-
                 //数量减1
-                fightNum--
-                viewBinding.itemFight.count = fightNum
-
+                viewModel.fightNum--
                 //数据库处理
-                lifecycleScope.launch(Dispatchers.IO) {
-                    itemDao.updateItemNumberByType(fightNum,1)
-                }
+                viewModel.changeItemCount(1,viewModel.fightNum)
             } else {
                 Toast.makeText(this, "道具已经用完", Toast.LENGTH_SHORT).show()
             }
@@ -256,21 +181,13 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
         viewBinding.itemBomb.setOnClickListener {
             Log.d(Constant.TAG, "炸弹道具")
-
-            if (bombNum > 0) {
+            if (viewModel.bombNum > 0) {
                 //随机消除某一种所有的AnimalView
                 LinkManager.bombGame(this@LinkActivity)
-
                 //数量减1
-                bombNum--
-                viewBinding.itemBomb.count = bombNum
-                Log.d(Constant.TAG, "数量：$bombNum")
-
+                viewModel.bombNum--
                 //数据库处理
-                lifecycleScope.launch(Dispatchers.IO) {
-                    itemDao.updateItemNumberByType(bombNum,2)
-                }
-
+                viewModel.changeItemCount(2,viewModel.bombNum)
             } else {
                 Toast.makeText(this, "道具已经用完", Toast.LENGTH_SHORT).show()
             }
@@ -279,7 +196,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         viewBinding.itemRefresh.setOnClickListener {
             Log.d(Constant.TAG, "刷新道具")
 
-            if (refreshNum > 0) {
+            if (viewModel.refreshNum > 0) {
                 //刷新游戏
                 LinkManager.refreshGame(
                     applicationContext,
@@ -288,27 +205,20 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                     screenHeight - messageBottom - ScreenUtil.getNavigationBarHeight(
                         applicationContext
                     ),
-                    level.levelId,
-                    level.levelMode,
+                    viewModel.level.levelId,
+                    viewModel.level.levelMode,
                     this@LinkActivity
                 )
-
                 //数量减1
-                refreshNum--
-                viewBinding.itemRefresh.count = refreshNum
-
+                viewModel.refreshNum--
                 //数据库处理
-                lifecycleScope.launch(Dispatchers.IO) {
-                    itemDao.updateItemNumberByType(refreshNum,3)
-                }
-
+                viewModel.changeItemCount(3,viewModel.refreshNum)
             } else {
                 Toast.makeText(this, "道具已经用完", Toast.LENGTH_SHORT).show()
             }
         }
 
         viewBinding.linkPause.setOnClickListener {
-            Log.d(Constant.TAG, "暂停")
             //暂停游戏
             //1.定时器暂停
             LinkManager.pauseGame()
@@ -316,7 +226,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             val transaction = supportFragmentManager.beginTransaction()
             val pause = PauseFragment()
             val bundle = Bundle()
-            bundle.putParcelable("level", level)
+            bundle.putParcelable("level", viewModel.level)
             pause.arguments = bundle
             transaction.replace(R.id.root_link, pause, "pause")
             transaction.commit()
@@ -395,8 +305,8 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
                                     //去线
                                     viewBinding.linkLayout.setLinkInfo(null)
                                     //获得金币
-                                    money += 2
-                                    viewBinding.linkMoneyText.text = money.toString()
+                                    viewModel.money += 2
+                                    viewModel.changeUserMoney(viewModel.money)
                                     //设置所有的宝可梦可以点击
                                     viewBinding.linkLayout.isEnabled = true
                                 }, 500)
@@ -440,6 +350,20 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     }
 
+    override fun observerData() {
+        super.observerData()
+        viewModel.moneyChangeResult.observe(this){
+            //设置金币
+            viewBinding.linkMoneyText.text = viewModel.money.toString()
+        }
+        viewModel.itemChangeResult.observe(this){
+            //设置道具数量
+            viewBinding.itemFight.count = viewModel.fightNum
+            viewBinding.itemBomb.count = viewModel.bombNum
+            viewBinding.itemRefresh.count = viewModel.refreshNum
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         LinkManager.pauseGame()
@@ -457,7 +381,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         //如果时间小于0
         if (time <= 0.0) {
             LinkManager.pauseGame()
-            LinkManager.endGame(this, level, time)
+            LinkManager.endGame(this, viewModel.level, time)
         } else {
             //保留小数后一位
             viewBinding.timeShow.progress = time
@@ -467,25 +391,11 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         if (LinkUtil.getBoardState()) {
             //结束游戏
             LinkManager.pauseGame()
-            level.levelTime = LinkConstant.TIME - time
-            level.levelState = LinkUtil.getStarByTime(time.toInt())
-            LinkManager.endGame(this, level, time)
-
-
-            lifecycleScope.launch(Dispatchers.IO){
-                //关卡结算
-                levelDao.insertLevel(level)
-                //下一关判断
-                levelDao.selectLevelById(level.id + 1).collect{
-                    val nextLevel = it[0]
-                    if(nextLevel.levelState == 0){
-                        levelDao.updateLevelStateById(4,nextLevel.id)
-                    }
-                }
-
-                //金币道具清算
-                userDao.updateUserMoneyById(money,user.userId)
-            }
+            viewModel.level.levelTime = LinkConstant.TIME - time
+            viewModel.level.levelState = LinkUtil.getStarByTime(time.toInt())
+            LinkManager.endGame(this, viewModel.level, time)
+            //关卡结算
+            viewModel.levelEnd()
         }
     }
 
