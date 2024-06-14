@@ -3,7 +3,6 @@ package com.muen.gamelink.ui.game.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -71,7 +70,6 @@ class PauseFragment : BaseFragment<FragmentPauseBinding>() {
             SoundPlayManager.getInstance(requireContext()).play(3)
             viewModel.selectLevelById(viewModel.level.id + 1){
                 //判断是否开启
-                Log.d("123","id = ${it.id} state = ${it.levelState}")
                 if(it.levelState != LevelState.LEVEL_STATE_NO.value){
                     //跳转界面
                     val intent = Intent(activity, LinkActivity::class.java)
