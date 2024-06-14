@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.main.fragment
+package com.muen.gamelink.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

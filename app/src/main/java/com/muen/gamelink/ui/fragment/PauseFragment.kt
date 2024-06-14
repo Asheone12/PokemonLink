@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.game.fragment
+package com.muen.gamelink.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,9 +12,9 @@ import com.muen.gamelink.game.constant.mode.LevelState
 import com.muen.gamelink.game.manager.LinkManager
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseFragment
-import com.muen.gamelink.ui.game.LinkActivity
-import com.muen.gamelink.ui.game.fragment.vm.PauseVM
-import com.muen.gamelink.ui.level.LevelActivity
+import com.muen.gamelink.ui.activity.LinkActivity
+import com.muen.gamelink.ui.fragment.vm.PauseVM
+import com.muen.gamelink.ui.activity.LevelActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

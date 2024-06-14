@@ -17,12 +17,12 @@
             android:name="notch.config"
             android:value="portrait|landscape" />
 
-        <activity android:name=".ui.game.LinkActivity" />
-        <activity android:name=".ui.level.LevelActivity" />
-        <activity android:name=".ui.failure.FailureActivity" />
-        <activity android:name=".ui.success.SuccessActivity" />
+        <activity android:name=".ui.activity.LinkActivity" />
+        <activity android:name=".ui.activity.LevelActivity" />
+        <activity android:name=".ui.activity.FailureActivity" />
+        <activity android:name=".ui.activity.SuccessActivity" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:launchMode="standard"
             android:exported="true">
             <intent-filter>

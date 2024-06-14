@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.failure
+package com.muen.gamelink.ui.activity
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,7 @@ import com.muen.gamelink.databinding.ActivityFailureBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
-import com.muen.gamelink.ui.failure.vm.FailureVM
-import com.muen.gamelink.ui.game.LinkActivity
-import com.muen.gamelink.ui.level.LevelActivity
+import com.muen.gamelink.ui.activity.vm.FailureVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

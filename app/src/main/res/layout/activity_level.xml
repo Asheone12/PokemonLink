@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/level_bg"
 
-    tools:context=".ui.level.LevelActivity">
+    tools:context=".ui.activity.LevelActivity">
 
     <!--关卡列表-->
     <HorizontalScrollView

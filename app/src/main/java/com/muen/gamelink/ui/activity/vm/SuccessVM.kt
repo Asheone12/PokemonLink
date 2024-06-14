@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.success.vm
+package com.muen.gamelink.ui.activity.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

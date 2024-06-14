@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.failure.vm
+package com.muen.gamelink.ui.fragment.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class FailureVM @Inject constructor(
+class PauseVM @Inject constructor(
     private val levelDao: LevelDao
 ) : ViewModel() {
     //关卡
@@ -22,6 +22,17 @@ class FailureVM @Inject constructor(
             //切换到主线程
             withContext(Dispatchers.Main) {
                 handler.invoke(levels)
+            }
+
+        }
+    }
+
+    fun selectLevelById(id: Int, handler: (TLevel) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val level = levelDao.selectLevelById(id)[0]
+            //切换到主线程
+            withContext(Dispatchers.Main) {
+                handler.invoke(level)
             }
 
         }

@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.success
+package com.muen.gamelink.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,7 @@ import com.muen.gamelink.databinding.ActivitySuccessBinding
 import com.muen.gamelink.game.util.LinkUtil
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
-import com.muen.gamelink.ui.game.LinkActivity
-import com.muen.gamelink.ui.level.LevelActivity
-import com.muen.gamelink.ui.success.vm.SuccessVM
+import com.muen.gamelink.ui.activity.vm.SuccessVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

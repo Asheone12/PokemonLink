@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.level
+package com.muen.gamelink.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,6 @@ import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.game.constant.mode.LevelState
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.source.local.entity.TLevel
-import com.muen.gamelink.ui.game.LinkActivity
-import com.muen.gamelink.ui.main.MainActivity
 import com.muen.gamelink.ui.BaseActivity
 import com.muen.gamelink.util.PxUtil
 import com.muen.gamelink.util.ScreenUtil

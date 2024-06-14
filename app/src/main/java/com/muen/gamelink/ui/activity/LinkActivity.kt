@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.game
+package com.muen.gamelink.ui.activity
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -27,8 +27,8 @@ import com.muen.gamelink.game.util.LinkUtil
 import com.muen.gamelink.game.view.AnimalView
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
-import com.muen.gamelink.ui.game.fragment.PauseFragment
-import com.muen.gamelink.ui.game.vm.LinkVM
+import com.muen.gamelink.ui.fragment.PauseFragment
+import com.muen.gamelink.ui.activity.vm.LinkVM
 import com.muen.gamelink.util.PxUtil
 import com.muen.gamelink.util.ScreenUtil
 import dagger.hilt.android.AndroidEntryPoint

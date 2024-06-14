@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_success_failure_link"
     android:orientation="vertical"
-    tools:context=".ui.success.SuccessActivity">
+    tools:context=".ui.activity.SuccessActivity">
 
     <!--banner部分-->
     <RelativeLayout

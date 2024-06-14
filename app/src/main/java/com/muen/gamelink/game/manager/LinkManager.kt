@@ -23,8 +23,8 @@ import com.muen.gamelink.game.view.AnimalView
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.source.local.entity.TLevel
-import com.muen.gamelink.ui.failure.FailureActivity
-import com.muen.gamelink.ui.success.SuccessActivity
+import com.muen.gamelink.ui.activity.FailureActivity
+import com.muen.gamelink.ui.activity.SuccessActivity
 import com.muen.gamelink.util.PxUtil
 import tyrantgit.explosionfield.ExplosionField
 import java.util.Timer

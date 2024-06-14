@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.main
+package com.muen.gamelink.ui.activity
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -16,11 +16,10 @@ import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
-import com.muen.gamelink.ui.level.LevelActivity
-import com.muen.gamelink.ui.main.fragment.HelpFragment
-import com.muen.gamelink.ui.main.fragment.SettingFragment
-import com.muen.gamelink.ui.main.fragment.StoreFragment
-import com.muen.gamelink.ui.main.vm.MainVM
+import com.muen.gamelink.ui.fragment.HelpFragment
+import com.muen.gamelink.ui.fragment.SettingFragment
+import com.muen.gamelink.ui.fragment.StoreFragment
+import com.muen.gamelink.ui.activity.vm.MainVM
 import com.muen.gamelink.util.PxUtil
 import dagger.hilt.android.AndroidEntryPoint
 
