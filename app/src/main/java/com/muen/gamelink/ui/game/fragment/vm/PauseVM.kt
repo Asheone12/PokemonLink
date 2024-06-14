@@ -18,11 +18,10 @@ class PauseVM @Inject constructor(
     lateinit var level: TLevel
     fun selectLevelsByMode(mode: Int, handler: (List<TLevel>) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            levelDao.selectLevelByMode(mode).collect {
-                //切换到主线程
-                withContext(Dispatchers.Main) {
-                    handler.invoke(it)
-                }
+            val levels = levelDao.selectLevelByMode(mode)
+            //切换到主线程
+            withContext(Dispatchers.Main) {
+                handler.invoke(levels)
             }
 
         }
@@ -30,11 +29,10 @@ class PauseVM @Inject constructor(
 
     fun selectLevelById(id: Int, handler: (TLevel) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            levelDao.selectLevelById(id).collect {
-                //切换到主线程
-                withContext(Dispatchers.Main) {
-                    handler.invoke(it[0])
-                }
+            val level = levelDao.selectLevelById(id)[0]
+            //切换到主线程
+            withContext(Dispatchers.Main) {
+                handler.invoke(level)
             }
 
         }

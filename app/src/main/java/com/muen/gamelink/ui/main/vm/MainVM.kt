@@ -43,31 +43,30 @@ class MainVM @Inject constructor(
     private fun loadLevels() {
         viewModelScope.launch(Dispatchers.IO) {
             //如果关卡数据为空，装入数据
-            levelDao.loadLevels().collect {
-                if (it.isEmpty()) {
-                    //简单模式
-                    for (i in 1..40) {
-                        if (i == 1) {
-                            levelDao.insertLevel(TLevel(i, 0f, 1, 4))
-                        } else {
-                            levelDao.insertLevel(TLevel(i, 0f, 1, 0))
-                        }
+            val levels = levelDao.loadLevels()
+            if (levels.isEmpty()) {
+                //简单模式
+                for (i in 1..40) {
+                    if (i == 1) {
+                        levelDao.insertLevel(TLevel(i, 0f, 1, 4))
+                    } else {
+                        levelDao.insertLevel(TLevel(i, 0f, 1, 0))
                     }
-                    //普通模式
-                    for (i in 1..40) {
-                        if (i == 1) {
-                            levelDao.insertLevel(TLevel(i, 0f, 2, 4))
-                        } else {
-                            levelDao.insertLevel(TLevel(i, 0f, 2, 0))
-                        }
+                }
+                //普通模式
+                for (i in 1..40) {
+                    if (i == 1) {
+                        levelDao.insertLevel(TLevel(i, 0f, 2, 4))
+                    } else {
+                        levelDao.insertLevel(TLevel(i, 0f, 2, 0))
                     }
-                    //困难模式
-                    for (i in 1..40) {
-                        if (i == 1) {
-                            levelDao.insertLevel(TLevel(i, 0f, 3, 4))
-                        } else {
-                            levelDao.insertLevel(TLevel(i, 0f, 3, 0))
-                        }
+                }
+                //困难模式
+                for (i in 1..40) {
+                    if (i == 1) {
+                        levelDao.insertLevel(TLevel(i, 0f, 3, 4))
+                    } else {
+                        levelDao.insertLevel(TLevel(i, 0f, 3, 0))
                     }
                 }
             }
@@ -93,13 +92,13 @@ class MainVM @Inject constructor(
 
     fun selectLevelData(mode: Int, handler: (List<TLevel>) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            levelDao.selectLevelByMode(mode).collect {
-                //切换到主线程
-                withContext(Dispatchers.Main) {
-                    handler.invoke(it)
-                }
+            val levels = levelDao.selectLevelByMode(mode)
+            //切换到主线程
+            withContext(Dispatchers.Main) {
+                handler.invoke(levels)
             }
-
         }
+
     }
+
 }

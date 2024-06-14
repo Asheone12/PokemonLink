@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.muen.gamelink.source.local.entity.TLevel
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LevelDao {
@@ -14,19 +13,19 @@ interface LevelDao {
      * 查询所有关卡
      */
     @Query("select * from T_Level")
-    fun loadLevels(): Flow<List<TLevel>>
+    fun loadLevels(): List<TLevel>
 
     /**
      * 根据id查询对应关卡
      */
     @Query("select * from T_Level where id = :id")
-    fun selectLevelById(id: Int): Flow<List<TLevel>>
+    fun selectLevelById(id: Int): List<TLevel>
 
     /**
      * 根据mode查询对应关卡
      */
     @Query("select * from T_Level where levelMode = :mode")
-    fun selectLevelByMode(mode: Int): Flow<List<TLevel>>
+    fun selectLevelByMode(mode: Int): List<TLevel>
 
     /**
      * 添加关卡
