@@ -5,24 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
+import androidx.activity.viewModels
 import com.muen.gamelink.databinding.ActivityFailureBinding
 import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.source.local.dao.LevelDao
-import com.muen.gamelink.source.local.db.GameDB
-import com.muen.gamelink.source.local.entity.TLevel
-import com.muen.gamelink.ui.level.LevelActivity
-import com.muen.gamelink.ui.game.LinkActivity
 import com.muen.gamelink.ui.BaseActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.muen.gamelink.ui.failure.vm.FailureVM
+import com.muen.gamelink.ui.game.LinkActivity
+import com.muen.gamelink.ui.level.LevelActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FailureActivity : BaseActivity<ActivityFailureBinding>() {
-    //level
-    private lateinit var level: TLevel
-    private lateinit var levelDao: LevelDao
+    private val viewModel by viewModels<FailureVM>()
     private lateinit var mContext: Context
 
     override fun onCreateViewBinding(): ActivityFailureBinding {
@@ -32,11 +27,10 @@ class FailureActivity : BaseActivity<ActivityFailureBinding>() {
     override fun initData() {
         super.initData()
         mContext = this
-        levelDao = GameDB.getDatabase(this).levelDao()
         //获取数据
         val intent = this.intent
         val bundle = intent.extras!!
-        level = bundle.getParcelable("level")!!
+        viewModel.level = bundle.getParcelable("level")!!
     }
 
     override fun initListener() {
@@ -61,25 +55,17 @@ class FailureActivity : BaseActivity<ActivityFailureBinding>() {
      */
     private fun jumpToActivity(flag: Int) {
         if (flag == 0) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                levelDao.selectLevelByMode(level.levelMode).collect{
-                    val levelList = it
-                    //切换到主线程
-                    withContext(Dispatchers.Main){
-                        //跳转界面
-                        val intent = Intent(mContext, LevelActivity::class.java)
-                        //加入数据
-                        val bundle = Bundle()
-                        //加入关卡模式数据
-                        bundle.putString("mode", "简单")
-                        //加入关卡数据
-                        bundle.putParcelableArrayList("levels", levelList as ArrayList<out Parcelable?>)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
-                    }
-
-                }
-
+            viewModel.selectLevelsByMode(viewModel.level.levelMode){
+                //跳转界面
+                val intent = Intent(mContext, LevelActivity::class.java)
+                //加入数据
+                val bundle = Bundle()
+                //加入关卡模式数据
+                bundle.putString("mode", "简单")
+                //加入关卡数据
+                bundle.putParcelableArrayList("levels", it as ArrayList<out Parcelable?>)
+                intent.putExtras(bundle)
+                startActivity(intent)
             }
 
         } else {
@@ -88,7 +74,7 @@ class FailureActivity : BaseActivity<ActivityFailureBinding>() {
             //加入数据
             val bundle = Bundle()
             //加入关卡数据
-            bundle.putParcelable("level", level)
+            bundle.putParcelable("level", viewModel.level)
             intent.putExtras(bundle)
             startActivity(intent)
         }
