@@ -5,7 +5,7 @@ object Constant {
     var TAG = "Constant"
 
     //一页展示关卡的个数
-    var LEVEL_PAGER_COUNT = 16
+    var LEVEL_PAGER_COUNT = 8
 
     //一行展示的关卡的个数
     var LEVEL_ROW_COUNT = 4
