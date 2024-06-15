@@ -91,7 +91,7 @@
     <!--游戏界面关卡字体样式-->
     <style name="link_level">
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <!--游戏界面具体关卡信息字体样式-->
@@ -102,8 +102,8 @@
 
     <!--控制道具大小的样式-->
     <style name="link_props">
-        <item name="android:layout_width">55dp</item>
-        <item name="android:layout_height">55dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="imgResource">@drawable/img_shape</item>
     </style>
 
@@ -124,9 +124,8 @@
     <!--金币的字体样式-->
     <style name="link_money_text">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">#FEFDA8</item>
-        <item name="android:layout_marginLeft">10dp</item>
     </style>
 
     <!--时间的字体样式-->

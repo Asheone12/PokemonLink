@@ -13,7 +13,6 @@ import android.view.animation.AnimationSet
 import android.view.animation.BounceInterpolator
 import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.muen.gamelink.R
@@ -27,9 +26,8 @@ import com.muen.gamelink.game.util.LinkUtil
 import com.muen.gamelink.game.view.AnimalView
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
-import com.muen.gamelink.ui.fragment.PauseFragment
 import com.muen.gamelink.ui.activity.vm.LinkVM
-import com.muen.gamelink.util.PxUtil
+import com.muen.gamelink.ui.fragment.PauseFragment
 import com.muen.gamelink.util.ScreenUtil
 import dagger.hilt.android.AndroidEntryPoint
 import tyrantgit.explosionfield.ExplosionField
@@ -45,7 +43,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
     private var screenHeight = 0
 
     //信息布局的bottom
-    private var messageBottom = 372
+    private var messageBottom = 0
 
     //存储点的信息集合
     private lateinit var linkInfo: LinkInfo
@@ -77,26 +75,8 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         //创建分碎视图的类
         explosionField = ExplosionField.attach2Window(this)
 
-        viewBinding.messageShow.setPadding(
-            0,
-            ScreenUtil.getStateBarHeight(this) + PxUtil.dpToPx(5, this),
-            0,
-            0
-        )
-
         //设置当前进度
         viewBinding.timeShow.progress = LinkConstant.TIME
-
-        //设置位置
-        val layoutParams = RelativeLayout.LayoutParams(
-            PxUtil.dpToPx(120, this),
-            PxUtil.dpToPx(120, this)
-        )
-        layoutParams.setMargins(
-            PxUtil.dpToPx(-50, this),
-            ScreenUtil.getStateBarHeight(this) - PxUtil.dpToPx(20, this),
-            0, 0
-        )
 
         //设置角度
         val angle1 = Math.toDegrees(atan(sqrt(44.0) / 10)).toInt()
@@ -109,54 +89,26 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         viewBinding.timeShow.total_progress = 90f
         viewBinding.timeShow.progress_paint.color = Color.parseColor("#c2c2c2")
 
-        //设置游戏主题内容布局
-        viewBinding.timeShow.layoutParams = layoutParams
-        val paramsLinkLayout = viewBinding.linkLayout.layoutParams
-        paramsLinkLayout.height = screenHeight - messageBottom
-        viewBinding.linkLayout.layoutParams = paramsLinkLayout
+        //在activity onCreate时，控件还没有attach到window上，返回值为0，需要开个线程等待执行
+        viewBinding.timeShow.post {
+            messageBottom = viewBinding.timeShow.height
+            //设置游戏主题内容布局
+            val paramsLinkLayout = viewBinding.linkLayout.layoutParams
+            paramsLinkLayout.height = screenHeight - messageBottom
+            viewBinding.linkLayout.layoutParams = paramsLinkLayout
 
-
-        //手动调整道具的排列
-        val tempProp = arrayOf(
-            viewBinding.itemFight,
-            viewBinding.itemBomb,
-            viewBinding.itemRefresh,
-            viewBinding.linkPause
-        )
-        viewBinding.linkItems.post {
-            //控制道具的大小
-            val propSize = PxUtil.dpToPx(55, baseContext)
-            //计算间距
-            val padding: Int = (viewBinding.linkItems.width - propSize * 4) / 5
-            //依次设置位置
-            for (i in tempProp.indices) {
-                //设置约束
-                val rlLayoutParams = RelativeLayout.LayoutParams(
-                    propSize,
-                    propSize
-                )
-                rlLayoutParams.setMargins(
-                    padding + (padding + propSize) * i,
-                    0,
-                    padding + (padding + propSize) * i + propSize,
-                    0
-                )
-                //重新设置给道具视图
-                tempProp[i].layoutParams = rlLayoutParams
-            }
+            //开始游戏
+            LinkManager.startGame(
+                applicationContext,
+                viewBinding.linkLayout,
+                screenWidth,
+                screenHeight - messageBottom - ScreenUtil.getNavigationBarHeight(
+                    applicationContext
+                ),
+                viewModel.level.levelId,
+                viewModel.level.levelMode
+            )
         }
-
-        //开始游戏
-        LinkManager.startGame(
-            applicationContext,
-            viewBinding.linkLayout,
-            screenWidth,
-            screenHeight - messageBottom - ScreenUtil.getNavigationBarHeight(
-                applicationContext
-            ),
-            viewModel.level.levelId,
-            viewModel.level.levelMode
-        )
 
     }
 

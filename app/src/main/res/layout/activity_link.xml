@@ -1,132 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_link"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_success_failure_link"
-
     android:clipChildren="false"
-
     tools:context=".ui.activity.LinkActivity">
 
     <!--关卡，道具，暂停信息-->
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/message_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/link_message">
+        android:background="@drawable/link_message"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginBottom="5dp">
+        <!--道具-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/link_items"
+            style="@style/link_prop_relative"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <!--关卡-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <!--道具 拳击-->
+            <swu.xl.numberitem.NumberOfItem
+                android:id="@+id/item_fight"
+                style="@style/link_props"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/item_bomb"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcResource="@drawable/link_prop_fight" />
 
-                <com.muen.gamelink.widget.MyTextView
-                    style="@style/link_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="1dp"
-                    android:text="@string/Link" />
+            <!--道具 炸弹-->
+            <swu.xl.numberitem.NumberOfItem
+                android:id="@+id/item_bomb"
+                style="@style/link_props"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/item_refresh"
+                app:layout_constraintStart_toEndOf="@id/item_fight"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcResource="@drawable/link_prop_bomb" />
 
-                <com.muen.gamelink.widget.MyTextView
-                    android:id="@+id/link_level_text"
-                    style="@style/link_level_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="25dp"
-                    android:text="15" />
+            <!--道具 混乱-->
+            <swu.xl.numberitem.NumberOfItem
+                android:id="@+id/item_refresh"
+                style="@style/link_props"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/link_pause"
+                app:layout_constraintStart_toEndOf="@id/item_bomb"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcResource="@drawable/link_prop_resort" />
 
-            </LinearLayout>
+            <!--暂停-->
+            <ImageView
+                android:id="@+id/link_pause"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/link_stop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/item_refresh"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!--道具-->
-            <RelativeLayout
-                android:id="@+id/link_items"
-                style="@style/link_prop_relative">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--道具 拳击-->
-                <swu.xl.numberitem.NumberOfItem
-                    android:id="@+id/item_fight"
-                    style="@style/link_props"
-                    app:srcResource="@drawable/link_prop_fight" />
-
-                <!--道具 炸弹-->
-                <swu.xl.numberitem.NumberOfItem
-                    android:id="@+id/item_bomb"
-                    style="@style/link_props"
-                    app:srcResource="@drawable/link_prop_bomb" />
-
-                <!--道具 混乱-->
-                <swu.xl.numberitem.NumberOfItem
-                    android:id="@+id/item_refresh"
-                    style="@style/link_props"
-                    app:srcResource="@drawable/link_prop_resort" />
-
-                <!--暂停-->
-                <ImageView
-                    android:id="@+id/link_pause"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:src="@drawable/link_stop" />
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--金币-->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title_layout_second"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message_show"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/link_message"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="0dp"
-        android:paddingBottom="2dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_show">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="80dp"
-            android:src="@drawable/link_coin" />
-
-        <com.muen.gamelink.widget.MyTextView
-            android:id="@+id/link_money_text"
-            style="@style/link_money_text"
+        <!--关卡-->
+        <LinearLayout
+            android:id="@+id/level_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1099"
-            android:textAlignment="center" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/money_layout"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+            <com.muen.gamelink.widget.MyTextView
+                style="@style/link_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Link" />
+
+            <com.muen.gamelink.widget.MyTextView
+                android:id="@+id/link_level_text"
+                style="@style/link_level_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="15" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/money_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/level_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/link_coin" />
+
+            <com.muen.gamelink.widget.MyTextView
+                android:id="@+id/link_money_text"
+                style="@style/link_money_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="1099" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--时间控制-->
     <swu.xl.circleprogress.CircleProgress
         android:id="@+id/time_show"
-        android:layout_width="122dp"
-        android:layout_height="120dp"
-        app:textLeftPadding="20"
-        app:textSize="17"
-        app:textTopPadding="3" />
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:textSize="12" />
 
     <!--布局部分-->
     <com.muen.gamelink.game.view.GameView
         android:id="@+id/link_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@+id/time_show" />
+        android:layout_below="@+id/time_show"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout_second" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
