@@ -1,25 +1,17 @@
-package com.muen.gamelink.ui.fragment
+package com.muen.gamelink.ui.activity
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import com.muen.gamelink.databinding.FragmentStoreBinding
+import androidx.activity.viewModels
+import com.muen.gamelink.databinding.ActivityStoreBinding
 import com.muen.gamelink.music.SoundPlayManager
-import com.muen.gamelink.ui.BaseFragment
-import com.muen.gamelink.ui.fragment.vm.StoreVM
+import com.muen.gamelink.ui.BaseActivity
+import com.muen.gamelink.ui.activity.vm.StoreVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StoreFragment : BaseFragment<FragmentStoreBinding>() {
+class StoreActivity : BaseActivity<ActivityStoreBinding>() {
     private val viewModel by viewModels<StoreVM>()
-
-    override fun onCreateViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): FragmentStoreBinding {
-        return FragmentStoreBinding.inflate(inflater, container, false)
+    override fun onCreateViewBinding(): ActivityStoreBinding {
+        return ActivityStoreBinding.inflate(layoutInflater)
     }
 
     override fun initData() {
@@ -39,7 +31,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
         }
 
         viewBinding.storeBomb.setOnClickListener {
-            SoundPlayManager.getInstance(requireContext()).play(3)
+            SoundPlayManager.getInstance(this).play(3)
             //购买炸弹道具
             viewModel.userMoney = viewModel.userMoney - viewModel.bombMoney
             viewModel.bombNum = viewModel.bombNum + 1
@@ -48,7 +40,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
         }
 
         viewBinding.storeRefresh.setOnClickListener {
-            SoundPlayManager.getInstance(requireContext()).play(3)
+            SoundPlayManager.getInstance(this).play(3)
             //购买刷新道具
             viewModel.userMoney = viewModel.userMoney - viewModel.refreshMoney
             viewModel.refreshNum = viewModel.refreshNum + 1
@@ -58,10 +50,8 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
 
         //移除该视图
         viewBinding.storeDelete.setOnClickListener {
-            SoundPlayManager.getInstance(requireContext()).play(3)
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.remove(this@StoreFragment)
-            transaction.commit()
+            SoundPlayManager.getInstance(this).play(3)
+            finish()
         }
 
     }
@@ -77,5 +67,4 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>() {
             viewBinding.propRefresh.count = viewModel.refreshNum
         }
     }
-
 }

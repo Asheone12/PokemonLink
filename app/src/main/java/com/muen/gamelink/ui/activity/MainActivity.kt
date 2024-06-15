@@ -16,9 +16,6 @@ import com.muen.gamelink.game.constant.Constant
 import com.muen.gamelink.music.BgmManager
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
-import com.muen.gamelink.ui.fragment.HelpFragment
-import com.muen.gamelink.ui.fragment.SettingFragment
-import com.muen.gamelink.ui.fragment.StoreFragment
 import com.muen.gamelink.ui.activity.vm.MainVM
 import com.muen.gamelink.util.PxUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -140,38 +137,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         viewBinding.mainSetting.setOnClickListener {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            //fragment事务
-            val manager = supportFragmentManager
-            val transaction = manager.beginTransaction()
-            //添加一个fragment
-            val setting = SettingFragment()
-            transaction.replace(R.id.root_main, setting, "setting")
-            transaction.commit()
+            startActivity(Intent(this,SettingActivity::class.java))
         }
         //帮助
         viewBinding.mainHelp.setOnClickListener {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            //fragment事务
-            val manager = supportFragmentManager
-            val transaction = manager.beginTransaction()
-            //添加一个fragment
-            val help = HelpFragment()
-            transaction.replace(R.id.root_main, help, "help")
-            transaction.commit()
+            startActivity(Intent(this,HelpActivity::class.java))
         }
         //商店
         viewBinding.mainStore.setOnClickListener {
             //播放点击音效
             SoundPlayManager.getInstance(baseContext).play(3)
-            //fragment事务
-            val manager = supportFragmentManager
-            val transaction = manager.beginTransaction()
-            Log.d(Constant.TAG, "商店按钮")
-            //添加一个fragment
-            val store = StoreFragment()
-            transaction.replace(R.id.root_main, store, "store")
-            transaction.commit()
+            startActivity(Intent(this,StoreActivity::class.java))
         }
 
     }

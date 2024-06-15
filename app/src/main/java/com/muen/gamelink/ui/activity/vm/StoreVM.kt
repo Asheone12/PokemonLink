@@ -1,4 +1,4 @@
-package com.muen.gamelink.ui.fragment.vm
+package com.muen.gamelink.ui.activity.vm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
