@@ -81,7 +81,7 @@
                     android:orientation="horizontal">
 
                     <!--道具图标-->
-                    <swu.xl.numberitem.NumberOfItem
+                    <com.muen.gamelink.widget.NumberOfItem
                         android:id="@+id/prop_fight"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
@@ -157,7 +157,7 @@
                     android:orientation="horizontal">
 
                     <!--道具图标-->
-                    <swu.xl.numberitem.NumberOfItem
+                    <com.muen.gamelink.widget.NumberOfItem
                         android:id="@+id/prop_bomb"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
@@ -233,7 +233,7 @@
                     android:orientation="horizontal">
 
                     <!--道具图标-->
-                    <swu.xl.numberitem.NumberOfItem
+                    <com.muen.gamelink.widget.NumberOfItem
                         android:id="@+id/prop_refresh"
                         android:layout_width="65dp"
                         android:layout_height="65dp"

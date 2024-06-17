@@ -70,7 +70,6 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 
-    implementation 'com.github.xiaoshitounen:NumberOfItem:1.0.2'
     implementation 'com.github.xiaoshitounen:CircleProgress:1.0.5'
 
     implementation 'tyrantgit:explosionfield:1.0.1'

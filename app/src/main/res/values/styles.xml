@@ -216,4 +216,13 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <!--游戏界面道具的背景样式-->
+    <declare-styleable name="NumberOfItem">
+        <!--道具图片视图的图片资源-->
+        <attr format="reference" name="srcResource"/>
+        <!--道具图片视图的背景样式-->
+        <attr format="reference" name="imgResource"/>
+        <!--道具数量视图的背景样式-->
+        <attr format="reference" name="countResource"/>
+    </declare-styleable>
 </resources>

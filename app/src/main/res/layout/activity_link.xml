@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <!--道具 拳击-->
-            <swu.xl.numberitem.NumberOfItem
+            <com.muen.gamelink.widget.NumberOfItem
                 android:id="@+id/item_fight"
                 style="@style/link_props"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -37,7 +37,7 @@
                 app:srcResource="@drawable/link_prop_fight" />
 
             <!--道具 炸弹-->
-            <swu.xl.numberitem.NumberOfItem
+            <com.muen.gamelink.widget.NumberOfItem
                 android:id="@+id/item_bomb"
                 style="@style/link_props"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +47,7 @@
                 app:srcResource="@drawable/link_prop_bomb" />
 
             <!--道具 混乱-->
-            <swu.xl.numberitem.NumberOfItem
+            <com.muen.gamelink.widget.NumberOfItem
                 android:id="@+id/item_refresh"
                 style="@style/link_props"
                 app:layout_constraintBottom_toBottomOf="parent"
