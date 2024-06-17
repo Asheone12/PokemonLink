@@ -304,15 +304,15 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     override fun observerData() {
         super.observerData()
-        viewModel.moneyChangeResult.observe(this){
+        viewModel.moneyChangeResult.observe(this) {
             //设置金币
             viewBinding.linkMoneyText.text = viewModel.money.toString()
         }
-        viewModel.itemChangeResult.observe(this){
+        viewModel.itemChangeResult.observe(this) {
             //设置道具数量
-            viewBinding.itemFight.count = viewModel.fightNum
-            viewBinding.itemBomb.count = viewModel.bombNum
-            viewBinding.itemRefresh.count = viewModel.refreshNum
+            viewBinding.itemFight.setCount(viewModel.fightNum)
+            viewBinding.itemBomb.setCount(viewModel.bombNum)
+            viewBinding.itemRefresh.setCount(viewModel.refreshNum)
         }
     }
 

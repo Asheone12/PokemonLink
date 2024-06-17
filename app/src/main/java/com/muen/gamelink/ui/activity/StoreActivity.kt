@@ -58,13 +58,13 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>() {
 
     override fun observerData() {
         super.observerData()
-        viewModel.userChangeResult.observe(this){
+        viewModel.userChangeResult.observe(this) {
             viewBinding.storeUserMoney.text = viewModel.userMoney.toString()
         }
-        viewModel.itemChangeResult.observe(this){
-            viewBinding.propFight.count = viewModel.fightNum
-            viewBinding.propBomb.count = viewModel.bombNum
-            viewBinding.propRefresh.count = viewModel.refreshNum
+        viewModel.itemChangeResult.observe(this) {
+            viewBinding.propFight.setCount(viewModel.fightNum)
+            viewBinding.propBomb.setCount(viewModel.bombNum)
+            viewBinding.propRefresh.setCount(viewModel.refreshNum)
         }
     }
 }
