@@ -216,7 +216,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <!--游戏界面道具的背景样式-->
+    <!--游戏界面道具的样式-->
     <declare-styleable name="NumberOfItem">
         <!--道具图片视图的图片资源-->
         <attr format="reference" name="srcResource"/>
@@ -224,5 +224,25 @@
         <attr format="reference" name="imgResource"/>
         <!--道具数量视图的背景样式-->
         <attr format="reference" name="countResource"/>
+    </declare-styleable>
+
+    <!--游戏界面进度条的样式-->
+    <declare-styleable name="CircleProgress">
+        <!--当前进度值-->
+        <attr format="float" name="progress"/>
+        <!--总的进度值-->
+        <attr format="float" name="total_progress"/>
+        <!--进度开始的角度-->
+        <attr format="integer" name="startAngle"/>
+        <!--进度结束的角度-->
+        <attr format="integer" name="endAngle"/>
+        <!--文本字体的大小 sp-->
+        <attr format="integer" name="textSize"/>
+        <!--文本字体的颜色-->
+        <attr format="string" name="textColor"/>
+        <!--文本字体绘制的左间距-->
+        <attr format="integer" name="textLeftPadding"/>
+        <!--文本字体绘制的上间距-->
+        <attr format="integer" name="textTopPadding"/>
     </declare-styleable>
 </resources>

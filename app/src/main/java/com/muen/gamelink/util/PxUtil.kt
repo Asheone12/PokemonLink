@@ -6,6 +6,7 @@ object PxUtil {
     /**
      * 得到设备的密度
      */
+    @JvmStatic
     fun getScreenDensity(context: Context): Float {
         return context.resources.displayMetrics.density
     }
@@ -16,6 +17,7 @@ object PxUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun dpToPx(dp: Int, context: Context): Int {
         return (dp * getScreenDensity(context)).toInt()
     }
@@ -26,6 +28,7 @@ object PxUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun dpToPx(dp: Float, context: Context): Int {
         return (dp * getScreenDensity(context)).toInt()
     }
@@ -36,6 +39,7 @@ object PxUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun pxToDp(px: Int, context: Context): Float {
         return px / getScreenDensity(context)
     }
@@ -46,6 +50,7 @@ object PxUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun pxToDp(px: Float, context: Context): Float {
         return px / getScreenDensity(context)
     }
@@ -56,6 +61,7 @@ object PxUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun spToPx(sp: Int, context: Context): Int {
         return (sp * getScreenDensity(context)).toInt()
     }
@@ -66,6 +72,7 @@ object PxUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun pxToSp(px: Int, context: Context): Int {
         return (px / getScreenDensity(context)).toInt()
     }

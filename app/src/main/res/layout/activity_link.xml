@@ -138,7 +138,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--时间控制-->
-    <swu.xl.circleprogress.CircleProgress
+    <com.muen.gamelink.widget.CircleProgress
         android:id="@+id/time_show"
         android:layout_width="65dp"
         android:layout_height="65dp"

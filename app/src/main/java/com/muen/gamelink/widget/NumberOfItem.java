@@ -14,8 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muen.gamelink.R;
-
-import swu.xl.circleprogress.PxUtil;
+import com.muen.gamelink.util.PxUtil;
 
 
 public class NumberOfItem extends RelativeLayout {
