@@ -40,6 +40,7 @@
             <com.muen.gamelink.widget.GameItem
                 android:id="@+id/item_bomb"
                 style="@style/link_props"
+                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/item_refresh"
                 app:layout_constraintStart_toEndOf="@id/item_fight"
@@ -50,6 +51,7 @@
             <com.muen.gamelink.widget.GameItem
                 android:id="@+id/item_refresh"
                 style="@style/link_props"
+                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/link_pause"
                 app:layout_constraintStart_toEndOf="@id/item_bomb"
@@ -61,6 +63,7 @@
                 android:id="@+id/link_pause"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="15dp"
                 android:src="@drawable/link_stop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
