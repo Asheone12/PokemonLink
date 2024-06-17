@@ -68,6 +68,10 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
 
     override fun initView() {
         super.initView()
+        //设置关卡号
+        viewBinding.linkLevelText.text = viewModel.level.levelId.toString()
+
+        //获取屏幕宽高
         screenWidth = ScreenUtil.getScreenWidth(applicationContext)
         screenHeight = ScreenUtil.getScreenHeight(applicationContext)
 
