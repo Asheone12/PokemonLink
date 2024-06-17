@@ -32,6 +32,7 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
         viewModel.level = bundle.getParcelable("level")!!
         viewModel.serialClick = bundle.getInt("serial_click")
         viewModel.gameEnd()
+        //重置游戏状态
         LinkManager.setPause(false)
     }
 

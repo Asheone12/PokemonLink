@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.muen.gamelink.databinding.ActivityFailureBinding
 import com.muen.gamelink.game.constant.Constant
+import com.muen.gamelink.game.manager.LinkManager
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
 import com.muen.gamelink.ui.activity.vm.FailureVM
@@ -29,6 +30,8 @@ class FailureActivity : BaseActivity<ActivityFailureBinding>() {
         val intent = this.intent
         val bundle = intent.extras!!
         viewModel.level = bundle.getParcelable("level")!!
+        //重置游戏状态
+        LinkManager.setPause(false)
     }
 
     override fun initListener() {
