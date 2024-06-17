@@ -325,7 +325,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         super.onResume()
         //开启游戏
         if (LinkManager.isPause()) {
-            LinkManager.pauseGame()
+            LinkManager.replayGame()
         }
     }
 

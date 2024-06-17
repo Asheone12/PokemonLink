@@ -395,12 +395,18 @@ object LinkManager {
         //判断是打开还是关闭
         if (!isPause) {
             stopTimer()
-        } else {
-            startTimer(time)
+            //切换状态
+            isPause = !isPause
         }
+    }
 
-        //切换状态
-        isPause = !isPause
+    fun replayGame(){
+        //判断是打开还是关闭
+        if (isPause) {
+            startTimer(time)
+            //切换状态
+            isPause = !isPause
+        }
     }
 
     /**

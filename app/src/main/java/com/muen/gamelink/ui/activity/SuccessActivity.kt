@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
 import com.muen.gamelink.databinding.ActivitySuccessBinding
+import com.muen.gamelink.game.manager.LinkManager
 import com.muen.gamelink.game.util.LinkUtil
 import com.muen.gamelink.music.SoundPlayManager
 import com.muen.gamelink.ui.BaseActivity
@@ -31,6 +32,7 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
         viewModel.level = bundle.getParcelable("level")!!
         viewModel.serialClick = bundle.getInt("serial_click")
         viewModel.gameEnd()
+        LinkManager.setPause(false)
     }
 
     override fun initView() {
