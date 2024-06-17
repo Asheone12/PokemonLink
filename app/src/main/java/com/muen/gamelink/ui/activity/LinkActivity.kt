@@ -76,7 +76,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         explosionField = ExplosionField.attach2Window(this)
 
         //设置当前进度
-        viewBinding.timeShow.progress = LinkConstant.TIME
+        viewBinding.timeShow.setProgress(LinkConstant.TIME)
 
         //设置角度
         val angle1 = Math.toDegrees(atan(sqrt(44.0) / 10)).toInt()
@@ -85,9 +85,9 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         viewBinding.timeShow.endAngle = 540 - angle2
 
         //设置进度颜色以及当前进度值以及总的进度值
-        viewBinding.timeShow.progress = 90f
-        viewBinding.timeShow.total_progress = 90f
-        viewBinding.timeShow.progress_paint.color = Color.parseColor("#c2c2c2")
+        viewBinding.timeShow.setProgress(90f)
+        viewBinding.timeShow.totalProgress = 90f
+        viewBinding.timeShow.progressPaint.color = Color.parseColor("#c2c2c2")
 
         //在activity onCreate时，控件还没有attach到window上，返回值为0，需要开个线程等待执行
         viewBinding.timeShow.post {
@@ -336,7 +336,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             LinkManager.endGame(this, viewModel.level, time)
         } else {
             //保留小数后一位
-            viewBinding.timeShow.progress = time
+            viewBinding.timeShow.setProgress(time)
         }
 
         //如果board全部清除了
