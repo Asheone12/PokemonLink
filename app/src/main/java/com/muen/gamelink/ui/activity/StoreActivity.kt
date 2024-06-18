@@ -23,6 +23,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>() {
     override fun initListener() {
         super.initListener()
         viewBinding.storeFight.setOnClickListener {
+            SoundPlayManager.getInstance(this).play(3)
             //购买拳头道具
             viewModel.userMoney = viewModel.userMoney - viewModel.fightMoney
             viewModel.fightNum = viewModel.fightNum + 1
