@@ -172,8 +172,8 @@ object LinkManager {
         for (size in LinkConstant.ANIMAL_SIZE downTo 10) {
 
             //如果宽度高度都满足条件
-            if (size * col_animal_num < PxUtil.pxToDp(width, context) &&
-                size * row_animal_num < PxUtil.pxToDp(height, context)
+            if (size * (col_animal_num - 2) < PxUtil.pxToDp(width, context)
+                && size * (row_animal_num - 2) < PxUtil.pxToDp(height, context)
             ) {
                 animal_size = size
                 break
