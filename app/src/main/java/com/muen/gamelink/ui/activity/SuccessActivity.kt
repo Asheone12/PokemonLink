@@ -128,5 +128,10 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
         }
     }
 
+    //禁用物理返回键
+    override fun onBackPressed() {
+        return
+    }
+
 
 }

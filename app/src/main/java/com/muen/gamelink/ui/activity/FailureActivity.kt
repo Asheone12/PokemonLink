@@ -81,4 +81,9 @@ class FailureActivity : BaseActivity<ActivityFailureBinding>() {
         }
     }
 
+    //禁用物理返回键
+    override fun onBackPressed() {
+        return
+    }
+
 }
