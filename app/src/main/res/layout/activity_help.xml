@@ -245,7 +245,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/link_stop" />
+                        android:src="@drawable/timer_progress" />
 
                     <com.muen.gamelink.widget.MyTextView
                         style="@style/ShowExplainText"
