@@ -40,7 +40,7 @@
             <com.muen.gamelink.widget.GameItem
                 android:id="@+id/item_bomb"
                 style="@style/link_props"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/item_refresh"
                 app:layout_constraintStart_toEndOf="@id/item_fight"
@@ -51,24 +51,12 @@
             <com.muen.gamelink.widget.GameItem
                 android:id="@+id/item_refresh"
                 style="@style/link_props"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/link_pause"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/item_bomb"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcResource="@drawable/link_prop_resort" />
-
-            <!--暂停-->
-            <ImageView
-                android:id="@+id/link_pause"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
-                android:src="@drawable/link_stop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/item_refresh"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

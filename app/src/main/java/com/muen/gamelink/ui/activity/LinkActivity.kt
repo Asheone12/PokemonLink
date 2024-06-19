@@ -174,7 +174,7 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
             }
         }
 
-        viewBinding.linkPause.setOnClickListener {
+        viewBinding.timeShow.setOnClickListener {
             //暂停游戏
             //1.定时器暂停
             LinkManager.pauseGame()
@@ -394,6 +394,10 @@ class LinkActivity : BaseActivity<ActivityLinkBinding>(), LinkManager.LinkGame {
         //开启动画
         animal.startAnimation(animationSet)
         animationSet.startNow()
+    }
+
+    override fun onBackPressed() {
+        return
     }
 
 }

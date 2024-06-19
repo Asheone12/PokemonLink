@@ -102,8 +102,8 @@
 
     <!--控制道具大小的样式-->
     <style name="link_props">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="imgResource">@drawable/img_shape</item>
     </style>
 
