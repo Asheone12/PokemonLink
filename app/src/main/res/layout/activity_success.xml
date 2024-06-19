@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_success_failure_link">
 
     <LinearLayout
@@ -12,42 +13,35 @@
         tools:context=".ui.activity.SuccessActivity">
 
         <!--banner部分-->
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="80dp"
-                android:src="@drawable/success_animals" />
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/iv_banner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/success_banner" />
+                android:src="@drawable/success_banner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.muen.gamelink.widget.MyTextView
                 style="@style/ShowSuccessMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/iv_banner"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="36dp"
-                android:text="@string/Success" />
+                android:layout_marginTop="5dp"
+                android:text="@string/Success"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_banner" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--闯关信息部分-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:orientation="vertical">
 
             <!--星星-->
@@ -162,9 +156,8 @@
         <!--按钮操作部分-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="30dp"
-            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 

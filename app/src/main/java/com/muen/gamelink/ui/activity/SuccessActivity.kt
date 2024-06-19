@@ -49,10 +49,10 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding>() {
             stars[i - 1].visibility = View.VISIBLE
         }
         //设置时间
-        viewBinding.timeText.text = viewModel.level.levelTime.toString() + "秒"
+        viewBinding.timeText.text = viewModel.level.levelTime.toInt().toString() + "秒"
         //设置分数
         viewBinding.scoreText.text =
-            LinkUtil.getScoreByTime(viewModel.level.levelTime!!).toString() + "分"
+            LinkUtil.getScoreByTime(viewModel.level.levelTime!!).toInt().toString() + "分"
         //设置连击
         viewBinding.batterText.text = (viewModel.serialClick.toString() + "次")
 
